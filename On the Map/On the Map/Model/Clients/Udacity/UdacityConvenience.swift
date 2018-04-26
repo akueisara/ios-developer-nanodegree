@@ -20,10 +20,19 @@ extension UdacityClient {
         uiAlertController.addAction(dismissAction)
         controller.present(uiAlertController, animated: true, completion: nil)
     }
+    
+    func checkURL(_ url: String) -> Bool {
+        if let url = URL(string: url) {
+            return UIApplication.shared.canOpenURL(url)
+        }
+        return false
+    }
 }
 
 struct ErrorMessage {
-    let EmptyEmailOrPassword = "Empty Email or Password."
-    let InvalidEmailOrPassword = "Invalid Email or Password."
-    let NoNetwork = "The Internet connection appears to be offine."
+    static let EmptyEmailOrPassword = "Empty Email or Password."
+    static let InvalidEmailOrPassword = "Invalid Email or Password."
+    static let NoNetwork = "The Internet connection appears to be offine."
+    static let InvalidLinkTitle = "Invalid Link"
+    static let InvalidLink = "Include HTTP(S)://"
 }

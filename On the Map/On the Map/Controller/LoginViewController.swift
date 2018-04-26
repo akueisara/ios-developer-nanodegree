@@ -14,7 +14,10 @@ class LoginViewController: UIViewController {
     
     // MARK: Properties
     
+//    var appDelegate: AppDelegate!
+    
     // MARK: Outlets
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -25,6 +28,9 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // get the app delegate
+//        appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -44,15 +50,21 @@ class LoginViewController: UIViewController {
         userDidTapView(self)
         
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage().EmptyEmailOrPassword)
+            UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.EmptyEmailOrPassword)
         } else {
             setUIEnabled(false)
             
             UdacityClient.sharedInstance().getUserId(username: emailTextField.text!, password: passwordTextField.text!) { (success, error, errorMessage) in
                 if success {
-                    DispatchQueue.main.async {
-                        self.setUIEnabled(true)
-                        UdacityClient.sharedInstance().displayAlert(self, title: "", message: "success")
+                    UdacityClient.sharedInstance().getUserData(userID: UdacityClient.sharedInstance().userID!) { (success, error) in
+                        DispatchQueue.main.async {
+                            if success {
+                                self.completeLogin()
+                            } else {
+                                self.setUIEnabled(true)
+                                UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.NoNetwork)
+                            }
+                        }
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -65,8 +77,16 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func signUp(_ sender: Any) {
-        UIApplication.shared.open(URL(string: "https://www.udacity.com/account/auth#!/signup")!,
+        UIApplication.shared.open(URL(string: UdacityClient.Constants.SignUpURL)!,
                                   options: [:], completionHandler: nil)
+    }
+    
+    // MARK: Login
+    
+    private func completeLogin() {
+        self.setUIEnabled(true)
+        let controller = storyboard!.instantiateViewController(withIdentifier: "MapTabBarController") as! UITabBarController
+        present(controller, animated: true, completion: nil)
     }
 }
 

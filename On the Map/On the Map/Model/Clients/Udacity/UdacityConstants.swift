@@ -37,6 +37,26 @@ extension UdacityClient {
         
         // MARK: Session
         static let Session = "/session"
+        static let User = "/users/{id}"
+    }
+    
+    // MARK: URL Keys
+    struct URLKeys {
+        static let UserID = "id"
+    }
+    
+    // MARK: Parameter Keys
+    struct ParameterKeys {
+        
+        // MARK: StudentLocation
+        static let Limit = "limit"
+        static let Order = "order"
+    }
+    
+    // MARK: Parameter Values
+    struct ParameterValues {
+        static let MaxNumber = "100"
+        static let SortedOrder = "-updatedAt"
     }
     
     // MARK: JSON Body Keys
@@ -45,5 +65,24 @@ extension UdacityClient {
         static let Password = "password"
     }
     
-
+    // MARK: JSON Response Keys
+    struct JSONResponseKeys {
+        
+        // MARK: Authentication
+        static let Account = "account"
+        static let UserId = "key"
+        
+        // MARK: Students
+        static let StudentCreatedTime = "createdAt"
+        static let StudentFirstName = "firstName"
+        static let StudentLastName = "lastName"
+        static let StudentLatitude = "latitude"
+        static let StudentLongitude = "longitude"
+        static let StudentMapString = "mapString"
+        static let StudentMediaURL = "mediaURL"
+        static let StudentObjectId = "objectId"
+        static let StudentUniqueKey = "uniqueKey"
+        static let StudentUpdatedTime = "updatedAt"
+        static let StudentResults = "results"
+    }
 }
