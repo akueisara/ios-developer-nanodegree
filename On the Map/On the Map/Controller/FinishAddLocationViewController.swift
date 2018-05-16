@@ -78,9 +78,9 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
         self.activityIndicator.stopAnimating()
         if success {
             UdacityClient.sharedInstance().showOverwrite = true
-            self.appDelegate.loadViews = true
-            self.appDelegate.loadMapView = false
-            self.appDelegate.loadTableView = false
+            UdacityClient.sharedInstance().loadViews = true
+            UdacityClient.sharedInstance().loadMapView = false
+            UdacityClient.sharedInstance().loadTableView = false
             self.dismiss(animated: true, completion: nil)
         } else {
             UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.UpdateLocationError)

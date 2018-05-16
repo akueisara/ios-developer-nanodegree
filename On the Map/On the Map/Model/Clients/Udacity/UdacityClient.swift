@@ -13,21 +13,27 @@ import UIKit
 
 class UdacityClient : NSObject {
     
-    // MARK: Properties
-    
-    // get the app delegate
-//    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
     // shared session
     var session = URLSession.shared
     
     // authentication state
     var userID: String? = nil
+    
+    // data for posting a new student location
     var userFirstName: String = ""
     var userLastName: String = ""
     var userObjectId: String = ""
     var userUniqueKey: String = ""
+    
+    // decide if showing overwrite
     var showOverwrite: Bool = false
+    
+    // decide if reload the views
+    var loadViews = false
+    var loadTableView = false
+    var loadMapView = false
+    
+    var studentInformations: [StudentInformation]?
     
     // MARK: Initializers
     
@@ -237,6 +243,7 @@ class UdacityClient : NSObject {
             
             if let results = parsedResult?[UdacityClient.JSONResponseKeys.StudentResults] as? [[String:AnyObject]] {
                 let students = StudentInformation.studentsFromResults(results)
+                self.studentInformations = students
                 completionHandlerForStudentData(students, nil)
             } else {
                 completionHandlerForStudentData(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))

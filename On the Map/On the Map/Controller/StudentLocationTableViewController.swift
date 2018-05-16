@@ -13,7 +13,6 @@ import UIKit
 class StudentLocationTableViewController: UIViewController {
     
     // MARK: Properties
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var students: [StudentInformation] = [StudentInformation]()
     
     // MARK: Outlets
@@ -29,16 +28,16 @@ class StudentLocationTableViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if(appDelegate.loadViews) {
+        if(UdacityClient.sharedInstance().loadViews) {
             loadTableView()
-            if(appDelegate.loadTableView && appDelegate.loadMapView) {
-                appDelegate.loadViews = false
+            if(UdacityClient.sharedInstance().loadTableView && UdacityClient.sharedInstance().loadMapView) {
+                UdacityClient.sharedInstance().loadViews = false
             }
         }
     }
     
     func loadTableView() {
-        appDelegate.loadTableView = true
+        UdacityClient.sharedInstance().loadTableView = true
         activityIndicator.startAnimating()
         UdacityClient.sharedInstance().getStudentLocations() { (students, error) in
             if let students = students {
@@ -48,7 +47,9 @@ class StudentLocationTableViewController: UIViewController {
                     self.studentsTableView.reloadData()
                 }
             } else {
-                self.activityIndicator.stopAnimating()
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                }
                 UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
             }
         }

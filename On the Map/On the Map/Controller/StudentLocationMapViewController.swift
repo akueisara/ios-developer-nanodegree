@@ -11,8 +11,7 @@ import UIKit
 import MapKit
 
 class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
-
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     var annotations = [MKPointAnnotation]()
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -29,16 +28,16 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if(appDelegate.loadViews) {
+        if(UdacityClient.sharedInstance().loadViews) {
             loadMapView()
-            if(appDelegate.loadTableView && appDelegate.loadMapView) {
-                appDelegate.loadViews = false
+            if(UdacityClient.sharedInstance().loadTableView && UdacityClient.sharedInstance().loadMapView) {
+                UdacityClient.sharedInstance().loadViews = false
             }
         }
     }
     
     func loadMapView() {
-        appDelegate.loadMapView = true
+        UdacityClient.sharedInstance().loadMapView = true
         activityIndicator.startAnimating()
         UdacityClient.sharedInstance().getStudentLocations(){(students, error) in
             if let students = students {
@@ -47,7 +46,9 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
                     self.activityIndicator.stopAnimating()
                 }
             } else {
-                self.activityIndicator.stopAnimating()
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                }
                 UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
             }
         }
