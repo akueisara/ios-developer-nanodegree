@@ -51,12 +51,15 @@ extension UdacityClient {
         // MARK: StudentLocation
         static let Limit = "limit"
         static let Order = "order"
+        static let Where = "where"
+        static let UniqueKey = "key"
     }
     
     // MARK: Parameter Values
     struct ParameterValues {
         static let MaxNumber = "100"
         static let SortedOrder = "-updatedAt"
+        static let UniqueKey = "%7B%22uniqueKey%22%3A%22{key}%22%7D"
     }
     
     // MARK: JSON Body Keys

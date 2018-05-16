@@ -6,13 +6,16 @@
 //  Copyright © 2018 Kuei-Jung Hu. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MapKit
 
 class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
 
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var annotations = [MKPointAnnotation]()
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
@@ -25,16 +28,26 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if(appDelegate.loadViews) {
+            loadMapView()
+            if(appDelegate.loadTableView && appDelegate.loadMapView) {
+                appDelegate.loadViews = false
+            }
+        }
     }
     
     func loadMapView() {
+        appDelegate.loadMapView = true
+        activityIndicator.startAnimating()
         UdacityClient.sharedInstance().getStudentLocations(){(students, error) in
             if let students = students {
                 DispatchQueue.main.async {
-                    print("Successfully Getting Data!")
-                    self.setUpLocationData(students)
+                    self.setupLocationData(students)
+                    self.activityIndicator.stopAnimating()
                 }
             } else {
+                self.activityIndicator.stopAnimating()
                 UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
             }
         }
@@ -72,9 +85,9 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // MARK: - Set UpData
+    // MARK: - Setup Data
     
-    func setUpLocationData(_ studentLocations: [UdacityStudent]) {
+    func setupLocationData(_ studentLocations: [StudentInformation]) {
         self.mapView.removeAnnotations(annotations)
         annotations = [MKPointAnnotation]()
         
@@ -91,8 +104,8 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
                 
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
-                annotation.title = "\(first) \(last)"
-                annotation.subtitle = mediaURL
+                annotation.title = "\(first ?? StudentInformation.FristNameDefault) \(last ?? StudentInformation.LastNameDefault)"
+                annotation.subtitle = mediaURL ?? StudentInformation.MediaURLDefault
                 
                 annotations.append(annotation)
             }
@@ -101,7 +114,15 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.addAnnotations(annotations)
     }
     
-    // MARK: Logout
+    // MARK: Actions
+    
+    @IBAction func refresh(_ sender: Any) {
+        loadMapView()
+    }
+
+    @IBAction func addLocation(_ sender: Any) {
+        UdacityClient.sharedInstance().addLocation(self)
+    }
     
     @IBAction func logout(_ sender: Any) {
         dismiss(animated: true, completion:{

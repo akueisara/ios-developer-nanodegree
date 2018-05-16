@@ -23,6 +23,11 @@ class UdacityClient : NSObject {
     
     // authentication state
     var userID: String? = nil
+    var userFirstName: String = ""
+    var userLastName: String = ""
+    var userObjectId: String = ""
+    var userUniqueKey: String = ""
+    var showOverwrite: Bool = false
     
     // MARK: Initializers
     
@@ -135,15 +140,12 @@ class UdacityClient : NSObject {
             let range = Range(5..<data.count)
             let newData = data.subdata(in: range) /* subset response data! */
            
-            var parsedResult: AnyObject! = nil
             do {
-                parsedResult = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as AnyObject
+                var _ = try JSONSerialization.jsonObject(with: newData, options: .allowFragments) as AnyObject
             } catch {
                 let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(newData)'"]
                 completionHandlerForAuth(false, NSError(domain: "getUserData", code: 1, userInfo: userInfo))
             }
-            
-            print(parsedResult)
             
             completionHandlerForAuth(true, nil)
         }
@@ -192,7 +194,7 @@ class UdacityClient : NSObject {
         task.resume()
     }
     
-    func getStudentLocations(completionHandlerForStudentData: @escaping (_ result: [UdacityStudent]?, _ error: NSError?) -> Void) {
+    func getStudentLocations(completionHandlerForStudentData: @escaping (_ result: [StudentInformation]?, _ error: NSError?) -> Void) {
         
         let parameters = [UdacityClient.ParameterKeys.Limit: UdacityClient.ParameterValues.MaxNumber, UdacityClient.ParameterKeys.Order: UdacityClient.ParameterValues.SortedOrder] as [String : AnyObject]
         let method: String = ParseMethods.StundetLocation
@@ -234,7 +236,7 @@ class UdacityClient : NSObject {
             }
             
             if let results = parsedResult?[UdacityClient.JSONResponseKeys.StudentResults] as? [[String:AnyObject]] {
-                let students = UdacityStudent.studentsFromResults(results)
+                let students = StudentInformation.studentsFromResults(results)
                 completionHandlerForStudentData(students, nil)
             } else {
                 completionHandlerForStudentData(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))
@@ -244,6 +246,115 @@ class UdacityClient : NSObject {
         task.resume()
     }
     
+    func getUserPostedInfo(uniqueKey: String) {
+        self.showOverwrite = false
+        let parameters = [UdacityClient.ParameterKeys.Where: substituteKeyInMethod(UdacityClient.ParameterValues.UniqueKey, key: UdacityClient.ParameterKeys.UniqueKey, value: uniqueKey)] as [String : AnyObject]
+        let method: String = ParseMethods.StundetLocation
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(UdacityClient.Constants.ParseApiHost, UdacityClient.Constants.ParseApiPath, parameters, withPathExtension: method))
+        request.addValue(UdacityClient.Constants.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(UdacityClient.Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            func sendError(_ error: String) {
+                print(error)
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error!)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            var parsedResult: AnyObject! = nil
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+            } catch {
+                print("Could not parse the data as JSON: '\(data)'")
+                return
+            }
+            
+            if let results = parsedResult as? [String: Any] {
+                if let resultStudentSet = results["results"] as? [[String: AnyObject]], resultStudentSet.count != 0{
+                    self.showOverwrite = true
+                    let user = StudentInformation.studentsFromResults(resultStudentSet)[0]
+                    self.userFirstName = user.firstName!
+                    self.userLastName = user.lastName!
+                    self.userObjectId = user.objectId
+                    self.userUniqueKey = user.uniqueKey!
+                }
+            }
+        }
+        
+        task.resume()
+       
+    }
+    
+    func addUserData(_ student: StudentInformation, _ location: String, _ method: String, _ httpMethod: String, _ completionHandler: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        /* Build the URL, Configure the request */
+        let parameters = [String:AnyObject]()
+        let method: String = method
+        let request = NSMutableURLRequest(url: udacityURLFromParameters(UdacityClient.Constants.ParseApiHost, UdacityClient.Constants.ParseApiPath, parameters, withPathExtension: method))
+        request.httpMethod = httpMethod
+        request.addValue(UdacityClient.Constants.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(UdacityClient.Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{\"\(UdacityClient.JSONResponseKeys.StudentUniqueKey)\": \"\(student.uniqueKey!)\", \"\(UdacityClient.JSONResponseKeys.StudentFirstName)\": \"\(student.firstName!)\", \"\(UdacityClient.JSONResponseKeys.StudentLastName)\": \"\(student.lastName!)\",\"\(UdacityClient.JSONResponseKeys.StudentMapString)\": \"\(location)\", \"\(UdacityClient.JSONResponseKeys.StudentMediaURL)\": \"\(student.mediaURL!)\",\"\(UdacityClient.JSONResponseKeys.StudentLatitude)\": \(student.latitude!), \"\(UdacityClient.JSONResponseKeys.StudentLongitude)\": \(student.longitude!)}".data(using: String.Encoding.utf8)
+        
+        /* Make the request */
+        let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+            
+            func sendError(_ error: String) {
+                print(error)
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandler(false, NSError(domain: "updateUserData", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                sendError("There was an error with your request: \(error!)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                sendError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard data != nil else {
+                sendError("No data was returned by the request!")
+                return
+            }
+            
+            completionHandler(true, nil)
+        }
+        
+        /* Start the request */
+        task.resume()
+    }
+    
+    func updateUserData(student: StudentInformation, location: String, completionHandlerForPut: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        addUserData(student, location, ParseMethods.StundetLocation + "/" + student.objectId, "PUT", completionHandlerForPut)
+    }
+    
+    func postUserData(student: StudentInformation, location: String, completionHandlerForPost: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        addUserData(student, location, ParseMethods.StundetLocation, "POST", completionHandlerForPost)
+    }
+    
+
     // MARK: Helpers
     
     // substitute the key for the value that is contained within the method name
@@ -268,8 +379,8 @@ class UdacityClient : NSObject {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.queryItems!.append(queryItem)
         }
-        
-        print(components.url!)
+        components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "%25", with: "%")
+
         return components.url!
     }
     

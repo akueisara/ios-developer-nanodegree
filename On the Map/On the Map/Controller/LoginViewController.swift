@@ -11,11 +11,7 @@ import UIKit
 // MARK: - LoginViewController: UIViewController
 
 class LoginViewController: UIViewController {
-    
-    // MARK: Properties
-    
-//    var appDelegate: AppDelegate!
-    
+
     // MARK: Outlets
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -28,9 +24,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // get the app delegate
-//        appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -85,6 +78,7 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         self.setUIEnabled(true)
+        UdacityClient.sharedInstance().getUserPostedInfo(uniqueKey: UdacityClient.sharedInstance().userID!)
         let controller = storyboard!.instantiateViewController(withIdentifier: "MapTabBarController") as! UITabBarController
         present(controller, animated: true, completion: nil)
     }

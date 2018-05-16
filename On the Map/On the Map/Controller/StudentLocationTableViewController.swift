@@ -13,33 +13,56 @@ import UIKit
 class StudentLocationTableViewController: UIViewController {
     
     // MARK: Properties
-    
-    var students: [UdacityStudent] = [UdacityStudent]()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var students: [StudentInformation] = [StudentInformation]()
     
     // MARK: Outlets
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var studentsTableView: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         loadTableView()
     }
     
-    func loadTableView() {
-        UdacityClient.sharedInstance().getStudentLocations() { (students, error) in
-            if let students = students {
-                self.students = students
-                DispatchQueue.main.async {
-                    self.studentsTableView.reloadData()
-                }
-            } else {
-                print(error ?? "empty error")
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if(appDelegate.loadViews) {
+            loadTableView()
+            if(appDelegate.loadTableView && appDelegate.loadMapView) {
+                appDelegate.loadViews = false
             }
         }
     }
     
-    // MARK: Logout
+    func loadTableView() {
+        appDelegate.loadTableView = true
+        activityIndicator.startAnimating()
+        UdacityClient.sharedInstance().getStudentLocations() { (students, error) in
+            if let students = students {
+                self.students = students
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.studentsTableView.reloadData()
+                }
+            } else {
+                self.activityIndicator.stopAnimating()
+                UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
+            }
+        }
+    }
+    
+    // MARK: Actions
+
+    @IBAction func refresh(_ sender: Any) {
+        loadTableView()
+    }
+    
+    @IBAction func addLocation(_ sender: Any) {
+        UdacityClient.sharedInstance().addLocation(self)
+    }
     
     @IBAction func logout(_ sender: Any) {
         dismiss(animated: true, completion:{
@@ -60,8 +83,8 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! StudentLocationTableViewCell
         
         /* Set cell defaults */
-        cell.studentName?.text = "\(student.firstName) \(student.lastName)"
-        cell.studentMediaURL?.text = student.mediaURL
+        cell.studentName?.text = "\(student.firstName ?? StudentInformation.FristNameDefault) \(student.lastName ?? StudentInformation.LastNameDefault)"
+        cell.studentMediaURL?.text = student.mediaURL ?? StudentInformation.MediaURLDefault
 
         return cell
     }
@@ -79,7 +102,7 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
         tableView.deselectRow(at: indexPath, animated: true)
         
         let app = UIApplication.shared
-        if UdacityClient.sharedInstance().checkURL(student.mediaURL!){
+        if UdacityClient.sharedInstance().checkURL(student.mediaURL ?? StudentInformation.MediaURLDefault){
             app.open(URL(string: student.mediaURL!)!)
         } else {
             UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
