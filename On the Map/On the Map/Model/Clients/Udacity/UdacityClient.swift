@@ -33,7 +33,7 @@ class UdacityClient : NSObject {
     var loadTableView = false
     var loadMapView = false
     
-    var studentInformations: [StudentInformation]?
+    var students: [StudentInformation] = [StudentInformation]()
     
     // MARK: Initializers
     
@@ -158,7 +158,7 @@ class UdacityClient : NSObject {
         task.resume()
     }
     
-    func logout() {
+    func logout(completion: (()->Void)? = nil, failure: (()-> Void)? = nil) {
         
         let parameters = [String:AnyObject]()
         var method: String = UdacityMethods.Session
@@ -181,20 +181,25 @@ class UdacityClient : NSObject {
             /* GUARD: Was there an error? */
             guard (error == nil) else {
                 sendError("There was an error with your request: \(error!)")
+                failure?()
                 return
             }
             
             /* GUARD: Did we get a successful 2XX response? */
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
                 sendError("Your request returned a status code other than 2xx!")
+                failure?()
                 return
             }
             
             /* GUARD: Was there any data returned? */
             guard let _ = data else {
                 sendError("No data was returned by the request!")
+                failure?()
                 return
             }
+            
+            completion?()
         }
         
         task.resume()
@@ -243,7 +248,7 @@ class UdacityClient : NSObject {
             
             if let results = parsedResult?[UdacityClient.JSONResponseKeys.StudentResults] as? [[String:AnyObject]] {
                 let students = StudentInformation.studentsFromResults(results)
-                self.studentInformations = students
+                self.students = students
                 completionHandlerForStudentData(students, nil)
             } else {
                 completionHandlerForStudentData(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))

@@ -13,7 +13,7 @@ import UIKit
 class StudentLocationTableViewController: UIViewController {
     
     // MARK: Properties
-    var students: [StudentInformation] = [StudentInformation]()
+//    var students: [StudentInformation] = [StudentInformation]()
     
     // MARK: Outlets
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -41,7 +41,7 @@ class StudentLocationTableViewController: UIViewController {
         activityIndicator.startAnimating()
         UdacityClient.sharedInstance().getStudentLocations() { (students, error) in
             if let students = students {
-                self.students = students
+                UdacityClient.sharedInstance().students = students
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.studentsTableView.reloadData()
@@ -80,26 +80,26 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
         
         /* Get cell type */
         let cellReuseIdentifier = "StudentLocationTableViewCell"
-        let student = students[(indexPath as NSIndexPath).row]
+        let student = UdacityClient.sharedInstance().students[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! StudentLocationTableViewCell
         
         /* Set cell defaults */
         cell.studentName?.text = "\(student.firstName ?? StudentInformation.FristNameDefault) \(student.lastName ?? StudentInformation.LastNameDefault)"
         cell.studentMediaURL?.text = student.mediaURL ?? StudentInformation.MediaURLDefault
-
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if students.count > 100 {
+        if UdacityClient.sharedInstance().students.count > 100 {
             return 100
         } else {
-            return students.count
+            return UdacityClient.sharedInstance().students.count
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let student = students[(indexPath as NSIndexPath).row]
+        let student = UdacityClient.sharedInstance().students[(indexPath as NSIndexPath).row]
         tableView.deselectRow(at: indexPath, animated: true)
         
         let app = UIApplication.shared

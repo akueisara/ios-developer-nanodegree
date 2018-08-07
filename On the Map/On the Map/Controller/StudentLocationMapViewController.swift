@@ -126,8 +126,18 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func logout(_ sender: Any) {
-        dismiss(animated: true, completion:{
-            UdacityClient.sharedInstance().logout()
+        activityIndicator.startAnimating()
+        UdacityClient.sharedInstance().logout(completion: {
+            self.dismiss(animated: true, completion: {
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                }
+            })
+        }, failure: {
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+            }
+            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.UnableToLogout, message: ErrorMessage.CheckNetworkOrContactKuei)
         })
     }
 }

@@ -69,4 +69,6 @@ struct ErrorMessage {
     static let EnterWebsite = "Must Enter a Website."
     static let InvalidGeocode = "Could Not Geocode the String"
     static let UpdateLocationError = "Failed to Update Location."
+    static let UnableToLogout = "Unable to Logout"
+    static let CheckNetworkOrContactKuei = "Please Check your network connection or contact Kuei"
 }
