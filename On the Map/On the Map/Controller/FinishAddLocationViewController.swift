@@ -26,12 +26,12 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mapView.delegate = self
+        mapView.delegate = self
         let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegion(center: pointAnnotation.coordinate, span: span)
-        self.mapView.setRegion(region, animated: true)
-        self.mapView.centerCoordinate = pointAnnotation.coordinate
-        self.mapView.addAnnotation(pointAnnotation)
+        mapView.setRegion(region, animated: true)
+        mapView.centerCoordinate = pointAnnotation.coordinate
+        mapView.addAnnotation(pointAnnotation)
     }
     
     // MARK: - MKMapViewDelegate
@@ -58,15 +58,15 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func finish(_ sender: Any) {
         activityIndicator.startAnimating()
-        let userData = StudentInformation(dictionary: [UdacityClient.JSONResponseKeys.StudentFirstName : UdacityClient.sharedInstance().userFirstName as AnyObject, UdacityClient.JSONResponseKeys.StudentLastName: UdacityClient.sharedInstance().userLastName as AnyObject, UdacityClient.JSONResponseKeys.StudentMediaURL: mediaURL as AnyObject, UdacityClient.JSONResponseKeys.StudentLatitude: latitude as AnyObject, UdacityClient.JSONResponseKeys.StudentLongitude: longitude as AnyObject, UdacityClient.JSONResponseKeys.StudentObjectId: UdacityClient.sharedInstance().userObjectId as AnyObject, UdacityClient.JSONResponseKeys.StudentUniqueKey: UdacityClient.sharedInstance().userUniqueKey as AnyObject])
-        if UdacityClient.sharedInstance().showOverwrite {
-            UdacityClient.sharedInstance().updateUserData(student: userData, location: location) { success, result in
+        let userData = StudentInformation(dictionary: [UdacityClient.JSONResponseKeys.StudentFirstName : UdacityClient.sharedInstance.userFirstName as AnyObject, UdacityClient.JSONResponseKeys.StudentLastName: UdacityClient.sharedInstance.userLastName as AnyObject, UdacityClient.JSONResponseKeys.StudentMediaURL: mediaURL as AnyObject, UdacityClient.JSONResponseKeys.StudentLatitude: latitude as AnyObject, UdacityClient.JSONResponseKeys.StudentLongitude: longitude as AnyObject, UdacityClient.JSONResponseKeys.StudentObjectId: UdacityClient.sharedInstance.userObjectId as AnyObject, UdacityClient.JSONResponseKeys.StudentUniqueKey: UdacityClient.sharedInstance.userUniqueKey as AnyObject])
+        if UdacityClient.sharedInstance.showOverwrite {
+            UdacityClient.sharedInstance.updateUserData(student: userData, location: location) { success, result in
                 DispatchQueue.main.async{
                     self.actionForMainQueue(success)
                 }
             }
         } else {
-            UdacityClient.sharedInstance().postUserData(student: userData, location: location) { success, result in
+            UdacityClient.sharedInstance.postUserData(student: userData, location: location) { success, result in
                 DispatchQueue.main.async{
                     self.actionForMainQueue(success)
                 }
@@ -75,15 +75,15 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
     }
     
     private func actionForMainQueue(_ success: Bool) {
-        self.activityIndicator.stopAnimating()
+        activityIndicator.stopAnimating()
         if success {
-            UdacityClient.sharedInstance().showOverwrite = true
-            UdacityClient.sharedInstance().loadViews = true
-            UdacityClient.sharedInstance().loadMapView = false
-            UdacityClient.sharedInstance().loadTableView = false
-            self.dismiss(animated: true, completion: nil)
+            UdacityClient.sharedInstance.showOverwrite = true
+            UdacityClient.sharedInstance.loadViews = true
+            UdacityClient.sharedInstance.loadMapView = false
+            UdacityClient.sharedInstance.loadTableView = false
+            dismiss(animated: true, completion: nil)
         } else {
-            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.UpdateLocationError)
+            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.UpdateLocationError)
         }
     }
 }

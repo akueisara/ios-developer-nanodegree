@@ -20,7 +20,7 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mapView.delegate = self
+        mapView.delegate = self
         
         loadMapView()
     }
@@ -28,18 +28,18 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if(UdacityClient.sharedInstance().loadViews) {
+        if(UdacityClient.sharedInstance.loadViews) {
             loadMapView()
-            if(UdacityClient.sharedInstance().loadTableView && UdacityClient.sharedInstance().loadMapView) {
-                UdacityClient.sharedInstance().loadViews = false
+            if(UdacityClient.sharedInstance.loadTableView && UdacityClient.sharedInstance.loadMapView) {
+                UdacityClient.sharedInstance.loadViews = false
             }
         }
     }
     
     func loadMapView() {
-        UdacityClient.sharedInstance().loadMapView = true
+        UdacityClient.sharedInstance.loadMapView = true
         activityIndicator.startAnimating()
-        UdacityClient.sharedInstance().getStudentLocations(){(students, error) in
+        UdacityClient.sharedInstance.getStudentLocations(){(students, error) in
             if let students = students {
                 DispatchQueue.main.async {
                     self.setupLocationData(students)
@@ -49,7 +49,7 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                 }
-                UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
+                UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error Getting Data!")
             }
         }
     }
@@ -78,10 +78,10 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle!, UdacityClient.sharedInstance().checkURL(toOpen) {
+            if let toOpen = view.annotation?.subtitle!, UdacityClient.sharedInstance.checkURL(toOpen) {
                 app.open(URL(string: toOpen)!)
             } else {
-                UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
+                UdacityClient.sharedInstance.displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
             }
         }
     }
@@ -89,7 +89,7 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     // MARK: - Setup Data
     
     func setupLocationData(_ studentLocations: [StudentInformation]) {
-        self.mapView.removeAnnotations(annotations)
+        mapView.removeAnnotations(annotations)
         annotations = [MKPointAnnotation]()
         
         let locations = studentLocations
@@ -112,7 +112,7 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
             }
         }
 
-        self.mapView.addAnnotations(annotations)
+        mapView.addAnnotations(annotations)
     }
     
     // MARK: Actions
@@ -122,12 +122,12 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
     }
 
     @IBAction func addLocation(_ sender: Any) {
-        UdacityClient.sharedInstance().addLocation(self)
+        UdacityClient.sharedInstance.addLocation(self)
     }
     
     @IBAction func logout(_ sender: Any) {
         activityIndicator.startAnimating()
-        UdacityClient.sharedInstance().logout(completion: {
+        UdacityClient.sharedInstance.logout(completion: {
             self.dismiss(animated: true, completion: {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
@@ -137,7 +137,7 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
             }
-            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.UnableToLogout, message: ErrorMessage.CheckNetworkOrContactKuei)
+            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.UnableToLogout, message: ErrorMessage.CheckNetworkOrContactKuei)
         })
     }
 }

@@ -12,6 +12,8 @@ import UIKit
 // MARK: - UdacityClient: NSObject
 
 class UdacityClient : NSObject {
+    // MARK: Shared Instance
+    static var sharedInstance = UdacityClient()
     
     // shared session
     var session = URLSession.shared
@@ -115,7 +117,7 @@ class UdacityClient : NSObject {
         
         let parameters = [String:AnyObject]()
         var method: String = UdacityMethods.User
-        method = substituteKeyInMethod(method, key: UdacityClient.URLKeys.UserID, value: String(UdacityClient.sharedInstance().userID!))!
+        method = substituteKeyInMethod(method, key: UdacityClient.URLKeys.UserID, value: String(UdacityClient.sharedInstance.userID!))!
         let request = NSMutableURLRequest(url: udacityURLFromParameters(UdacityClient.Constants.UdacityApiHost, UdacityClient.Constants.UdacityApiPath, parameters, withPathExtension: method))
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             
@@ -394,14 +396,5 @@ class UdacityClient : NSObject {
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "%25", with: "%")
 
         return components.url!
-    }
-    
-    // MARK: Shared Instance
-    
-    class func sharedInstance() -> UdacityClient {
-        struct Singleton {
-            static var sharedInstance = UdacityClient()
-        }
-        return Singleton.sharedInstance
     }
 }

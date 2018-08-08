@@ -28,20 +28,20 @@ class StudentLocationTableViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if(UdacityClient.sharedInstance().loadViews) {
+        if(UdacityClient.sharedInstance.loadViews) {
             loadTableView()
-            if(UdacityClient.sharedInstance().loadTableView && UdacityClient.sharedInstance().loadMapView) {
-                UdacityClient.sharedInstance().loadViews = false
+            if(UdacityClient.sharedInstance.loadTableView && UdacityClient.sharedInstance.loadMapView) {
+                UdacityClient.sharedInstance.loadViews = false
             }
         }
     }
     
     func loadTableView() {
-        UdacityClient.sharedInstance().loadTableView = true
+        UdacityClient.sharedInstance.loadTableView = true
         activityIndicator.startAnimating()
-        UdacityClient.sharedInstance().getStudentLocations() { (students, error) in
+        UdacityClient.sharedInstance.getStudentLocations() { (students, error) in
             if let students = students {
-                UdacityClient.sharedInstance().students = students
+                Students.sharedInstance.students = students
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.studentsTableView.reloadData()
@@ -50,7 +50,7 @@ class StudentLocationTableViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                 }
-                UdacityClient.sharedInstance().displayAlert(self, title: "", message: "Error Getting Data!")
+                UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error Getting Data!")
             }
         }
     }
@@ -62,12 +62,12 @@ class StudentLocationTableViewController: UIViewController {
     }
     
     @IBAction func addLocation(_ sender: Any) {
-        UdacityClient.sharedInstance().addLocation(self)
+        UdacityClient.sharedInstance.addLocation(self)
     }
     
     @IBAction func logout(_ sender: Any) {
         dismiss(animated: true, completion:{
-            UdacityClient.sharedInstance().logout()
+            UdacityClient.sharedInstance.logout()
         })
     }
 }
@@ -80,7 +80,7 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
         
         /* Get cell type */
         let cellReuseIdentifier = "StudentLocationTableViewCell"
-        let student = UdacityClient.sharedInstance().students[(indexPath as NSIndexPath).row]
+        let student = Students.sharedInstance.students[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! StudentLocationTableViewCell
         
         /* Set cell defaults */
@@ -91,22 +91,22 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UdacityClient.sharedInstance().students.count > 100 {
+        if Students.sharedInstance.students.count > 100 {
             return 100
         } else {
-            return UdacityClient.sharedInstance().students.count
+            return Students.sharedInstance.students.count
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let student = UdacityClient.sharedInstance().students[(indexPath as NSIndexPath).row]
+        let student = Students.sharedInstance.students[(indexPath as NSIndexPath).row]
         tableView.deselectRow(at: indexPath, animated: true)
         
         let app = UIApplication.shared
-        if UdacityClient.sharedInstance().checkURL(student.mediaURL ?? StudentInformation.MediaURLDefault){
+        if UdacityClient.sharedInstance.checkURL(student.mediaURL ?? StudentInformation.MediaURLDefault){
             app.open(URL(string: student.mediaURL!)!)
         } else {
-            UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
+            UdacityClient.sharedInstance.displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
         }
     }
     

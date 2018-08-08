@@ -20,6 +20,7 @@
 		9CB8C54420905B9500742BC1 /* StudentLocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8C54320905B9500742BC1 /* StudentLocationTableViewController.swift */; };
 		9CB8C546209079AC00742BC1 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8C545209079AC00742BC1 /* StudentInformation.swift */; };
 		9CB8C5482091B1C300742BC1 /* StudentLocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8C5472091B1C300742BC1 /* StudentLocationTableViewCell.swift */; };
+		9CD89A51211A91330007D4FC /* Students.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD89A50211A91330007D4FC /* Students.swift */; };
 		9CEFB37520A962A80033ED32 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEFB37420A962A80033ED32 /* AddLocationViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		9CB8C54320905B9500742BC1 /* StudentLocationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocationTableViewController.swift; sourceTree = "<group>"; };
 		9CB8C545209079AC00742BC1 /* StudentInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
 		9CB8C5472091B1C300742BC1 /* StudentLocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocationTableViewCell.swift; sourceTree = "<group>"; };
+		9CD89A50211A91330007D4FC /* Students.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Students.swift; sourceTree = "<group>"; };
 		9CEFB37420A962A80033ED32 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,6 +78,7 @@
 				9C4BE9C6208F043100CD7245 /* UdacityConstants.swift */,
 				9C4BE9CC208F1BB600CD7245 /* UdacityConvenience.swift */,
 				9CB8C545209079AC00742BC1 /* StudentInformation.swift */,
+				9CD89A50211A91330007D4FC /* Students.swift */,
 			);
 			path = Udacity;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				9CA3504720AAE4FC00C29099 /* FinishAddLocationViewController.swift in Sources */,
 				9C4BE9C9208F058100CD7245 /* UdacityClient.swift in Sources */,
 				9CEFB37520A962A80033ED32 /* AddLocationViewController.swift in Sources */,
+				9CD89A51211A91330007D4FC /* Students.swift in Sources */,
 				9CB8C54420905B9500742BC1 /* StudentLocationTableViewController.swift in Sources */,
 				9CB8C54220905B8700742BC1 /* StudentLocationMapViewController.swift in Sources */,
 				9C4BE9C7208F043100CD7245 /* UdacityConstants.swift in Sources */,

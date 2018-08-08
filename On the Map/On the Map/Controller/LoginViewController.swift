@@ -43,26 +43,26 @@ class LoginViewController: UIViewController {
         userDidTapView(self)
         
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.EmptyEmailOrPassword)
+            UdacityClient.sharedInstance.displayAlert(self, title: "", message: ErrorMessage.EmptyEmailOrPassword)
         } else {
             setUIEnabled(false)
             
-            UdacityClient.sharedInstance().getUserId(username: emailTextField.text!, password: passwordTextField.text!) { (success, error, errorMessage) in
+            UdacityClient.sharedInstance.getUserId(username: emailTextField.text!, password: passwordTextField.text!) { (success, error, errorMessage) in
                 if success {
-                    UdacityClient.sharedInstance().getUserData(userID: UdacityClient.sharedInstance().userID!) { (success, error) in
+                    UdacityClient.sharedInstance.getUserData(userID: UdacityClient.sharedInstance.userID!) { (success, error) in
                         DispatchQueue.main.async {
                             if success {
                                 self.completeLogin()
                             } else {
                                 self.setUIEnabled(true)
-                                UdacityClient.sharedInstance().displayAlert(self, title: "", message: ErrorMessage.NoNetwork)
+                                UdacityClient.sharedInstance.displayAlert(self, title: "", message: ErrorMessage.NoNetwork)
                             }
                         }
                     }
                 } else {
                     DispatchQueue.main.async {
                         self.setUIEnabled(true)
-                        UdacityClient.sharedInstance().displayAlert(self, title: "", message: errorMessage!)
+                        UdacityClient.sharedInstance.displayAlert(self, title: "", message: errorMessage!)
                     }
                 }
             }
@@ -77,8 +77,8 @@ class LoginViewController: UIViewController {
     // MARK: Login
     
     private func completeLogin() {
-        self.setUIEnabled(true)
-        UdacityClient.sharedInstance().getUserPostedInfo(uniqueKey: UdacityClient.sharedInstance().userID!)
+        setUIEnabled(true)
+        UdacityClient.sharedInstance.getUserPostedInfo(uniqueKey: UdacityClient.sharedInstance.userID!)
         let controller = storyboard!.instantiateViewController(withIdentifier: "MapTabBarController") as! UITabBarController
         present(controller, animated: true, completion: nil)
     }
@@ -100,16 +100,16 @@ extension LoginViewController: UITextFieldDelegate {
     @objc func keyboardDidShow(_ notification: Notification) {
         var userInfo = notification.userInfo!
         var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+        keyboardFrame = view.convert(keyboardFrame, from: nil)
         
-        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        var contentInset:UIEdgeInsets = scrollView.contentInset
         contentInset.bottom = keyboardFrame.size.height
-        self.scrollView.contentInset = contentInset
+        scrollView.contentInset = contentInset
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
         let contentInset:UIEdgeInsets = UIEdgeInsets.zero
-        self.scrollView.contentInset = contentInset
+        scrollView.contentInset = contentInset
     }
     
     private func keyboardHeight(_ notification: Notification) -> CGFloat {

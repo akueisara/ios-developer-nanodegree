@@ -28,6 +28,7 @@ struct StudentInformation {
     let objectId: String
     let uniqueKey: String?
     let updatedAt: String?
+
     
     // MARK: Initializers
     

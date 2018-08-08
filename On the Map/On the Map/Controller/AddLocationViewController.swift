@@ -48,11 +48,11 @@ class AddLocationViewController: UIViewController {
         userDidTapView(self)
         
         if locationTextField.text!.isEmpty  {
-            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.EnterLocation)
+            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.EnterLocation)
         } else if websiteTextField.text!.isEmpty {
-            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.EnterWebsite)
-        } else if !UdacityClient.sharedInstance().checkURL(websiteTextField.text!) {
-            UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidLinkTitle + ". " + ErrorMessage.InvalidLink)
+            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.EnterWebsite)
+        } else if !UdacityClient.sharedInstance.checkURL(websiteTextField.text!) {
+            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidLinkTitle + ". " + ErrorMessage.InvalidLink)
         } else {
             let localSearchRequest = MKLocalSearchRequest()
             localSearchRequest.naturalLanguageQuery = locationTextField.text
@@ -61,7 +61,7 @@ class AddLocationViewController: UIViewController {
             localSearch.start { (localSearchResponse, error) -> Void in
                 if localSearchResponse == nil{
                     self.activityIndicator.stopAnimating()
-                    UdacityClient.sharedInstance().displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidGeocode)
+                    UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidGeocode)
                     return
                 }
                 
@@ -101,16 +101,16 @@ extension AddLocationViewController: UITextFieldDelegate {
     @objc func keyboardDidShow(_ notification: Notification) {
         var userInfo = notification.userInfo!
         var keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
-        keyboardFrame = self.view.convert(keyboardFrame, from: nil)
+        keyboardFrame = view.convert(keyboardFrame, from: nil)
         
-        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        var contentInset:UIEdgeInsets = scrollView.contentInset
         contentInset.bottom = keyboardFrame.size.height
-        self.scrollView.contentInset = contentInset
+        scrollView.contentInset = contentInset
     }
     
     @objc func keyboardDidHide(_ notification: Notification) {
         let contentInset:UIEdgeInsets = UIEdgeInsets.zero
-        self.scrollView.contentInset = contentInset
+        scrollView.contentInset = contentInset
     }
     
     private func keyboardHeight(_ notification: Notification) -> CGFloat {

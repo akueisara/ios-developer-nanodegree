@@ -49,10 +49,10 @@ extension UdacityClient {
     }
     
     func addLocation(_ controller: UIViewController) {
-        if UdacityClient.sharedInstance().showOverwrite {
-            UdacityClient.sharedInstance().displayAlertForOverwrite(controller, title: "", message: UdacityClient.sharedInstance().substituteKeyInMethod(ErrorMessage.OverwriteMessage, key: "userName", value: "\(UdacityClient.sharedInstance().userFirstName ) \(UdacityClient.sharedInstance().userLastName )")!)
+        if UdacityClient.sharedInstance.showOverwrite {
+            UdacityClient.sharedInstance.displayAlertForOverwrite(controller, title: "", message: UdacityClient.sharedInstance.substituteKeyInMethod(ErrorMessage.OverwriteMessage, key: "userName", value: "\(UdacityClient.sharedInstance.userFirstName ) \(UdacityClient.sharedInstance.userLastName )")!)
         } else {
-            UdacityClient.sharedInstance().presentAddLocation(controller)
+            UdacityClient.sharedInstance.presentAddLocation(controller)
         }
     }
 }
