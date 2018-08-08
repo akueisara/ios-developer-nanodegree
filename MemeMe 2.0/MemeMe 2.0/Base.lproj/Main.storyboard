@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oDh-VQ-Vbm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oDh-VQ-Vbm">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeueExtras.ttc">
-            <string>HelveticaNeue-CondensedBlack</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Meme Detail View Controller-->
         <scene sceneID="c5u-i2-G7u">
@@ -81,7 +76,7 @@
                             <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xe1-aq-6kL">
                                 <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                                 <items>
-                                    <navigationItem id="c3J-Kt-Z9j">
+                                    <navigationItem title="Meme Editor" id="c3J-Kt-Z9j">
                                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="vq5-8Y-vI1">
                                             <connections>
                                                 <action selector="shareAction:" destination="BYZ-38-t0r" id="j8Z-8E-beq"/>
@@ -95,25 +90,35 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBM-uE-zR2" userLabel="Bottom">
-                                <rect key="frame" x="0.0" y="600" width="414" height="48"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBM-uE-zR2" userLabel="Bottom">
+                                <rect key="frame" x="137.66666666666666" y="600" width="138.99999999999997" height="48"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gbm-KW-AMU" userLabel="Top">
-                                <rect key="frame" x="0.0" y="108" width="414" height="48"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="TOP" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gbm-KW-AMU" userLabel="Top">
+                                <rect key="frame" x="173.66666666666666" y="108" width="66.666666666666657" height="48"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBlack" family="Helvetica Neue" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="kBM-uE-zR2" firstAttribute="bottom" secondItem="7ZX-tc-Bp2" secondAttribute="top" constant="-44" id="04L-0W-eG1"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kBM-uE-zR2" secondAttribute="trailing" id="3xu-1B-aWR"/>
-                            <constraint firstItem="kBM-uE-zR2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="58W-2i-Ikl"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Gbm-KW-AMU" secondAttribute="trailing" id="6Px-dg-gvQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kBM-uE-zR2" secondAttribute="trailing" id="3xu-1B-aWR"/>
+                            <constraint firstItem="kBM-uE-zR2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="58W-2i-Ikl"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Gbm-KW-AMU" secondAttribute="trailing" id="6Px-dg-gvQ"/>
                             <constraint firstItem="hSW-SW-Kls" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7a6-po-s9f"/>
                             <constraint firstItem="hSW-SW-Kls" firstAttribute="bottom" secondItem="7ZX-tc-Bp2" secondAttribute="top" id="7qD-Se-m9J"/>
                             <constraint firstItem="hSW-SW-Kls" firstAttribute="top" secondItem="Xe1-aq-6kL" secondAttribute="bottom" id="A6v-PJ-hXA"/>
@@ -121,7 +126,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Xe1-aq-6kL" secondAttribute="trailing" id="VfU-bw-pNM"/>
                             <constraint firstItem="Gbm-KW-AMU" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Wgx-hv-5cD"/>
                             <constraint firstItem="Gbm-KW-AMU" firstAttribute="top" secondItem="Xe1-aq-6kL" secondAttribute="bottom" constant="44" id="Xdb-SF-7Gp"/>
-                            <constraint firstItem="Gbm-KW-AMU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XiT-DJ-mE2"/>
+                            <constraint firstItem="Gbm-KW-AMU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XiT-DJ-mE2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7ZX-tc-Bp2" secondAttribute="bottom" id="bB2-5b-09Y"/>
                             <constraint firstItem="kBM-uE-zR2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eLX-pL-j3u"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hSW-SW-Kls" secondAttribute="trailing" id="fji-Rz-47L"/>
@@ -236,7 +241,7 @@
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="" id="1Yy-w9-TdV"/>
                     <navigationItem key="navigationItem" title="Sent Memes" id="g7A-x7-mUJ">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="EIm-Ut-TIH">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="EIm-Ut-TIH">
                             <connections>
                                 <action selector="addAction:" destination="icy-n6-0Cj" id="Pw3-Mv-38k"/>
                             </connections>
@@ -287,7 +292,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="108.66666666666667"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9L-ld-2fX" userLabel="Meme Label">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9L-ld-2fX" userLabel="Meme Label">
                                                     <rect key="frame" x="150" y="5" width="259" height="98.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -351,7 +356,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="" id="df6-cV-fGg"/>
                     <navigationItem key="navigationItem" title="Sent Memes" id="O7a-hI-PlD">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="2SV-5h-JDk">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="2SV-5h-JDk">
                             <connections>
                                 <action selector="addAction:" destination="pbv-ZL-ZkJ" id="fuE-eJ-WPz"/>
                             </connections>

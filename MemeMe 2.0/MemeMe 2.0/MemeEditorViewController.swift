@@ -19,33 +19,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        if let memeFromDetail = meme as Meme! {
-//            setupTextField(textField: topTextField, text: memeFromDetail.topText)
-//            setupTextField(textField: bottomTextField, text: memeFromDetail.bottomText)
-//            imageView.image = memeFromDetail.originalImage
-//        } else {
-            setupTextField(textField: topTextField, text: "TOP")
-            setupTextField(textField: bottomTextField, text: "BOTTOM")
-//        }
-    }
-    
-    func setupTextField(textField: UITextField, text: String) {
-        AppUtils.setupTextField(textField: textField, text: text, textSize: 40)
-        textField.delegate = self
+        hideKeyboardWhenTappedAround()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        if imageView.image == nil {
-            shareButton.isEnabled = false
-        } else {
-            shareButton.isEnabled = true
-        }
+        shareButton.isEnabled = false
         subscribeToKeyboardNotifications()
     }
     
@@ -71,20 +54,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            setupImageView(image: image)
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true, completion: {
+                self.setupImageView(image: image)
+                self.shareButton.isEnabled = true
+            })
         }
     }
     
     func setupImageView(image: UIImage) {
         self.imageView.image = image
         self.imageView.contentMode = .scaleAspectFit
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if ["TOP", "BOTTOM"].contains(textField.text!) {
-            textField.text = ""
-        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -168,9 +147,9 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     @IBAction func cancelAction(_ sender: Any) {
         if(imageView.image != nil) {
-            shareButton.isEnabled = false;
-            topTextField.text = "TOP"
-            bottomTextField.text = "BOTTOM"
+            shareButton.isEnabled = false
+            topTextField.text = ""
+            bottomTextField.text = ""
             imageView.image = nil
             return
         }
@@ -180,3 +159,15 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
 }
 
+// close keyboard by touching anywhere
+extension MemeEditorViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
