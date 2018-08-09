@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -30,7 +31,7 @@
                                                     <constraint firstAttribute="height" constant="140" id="eyn-Hk-Hxl"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vjc-nf-Ser">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="akueisara.39@gmail.com" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vjc-nf-Ser">
                                                 <rect key="frame" x="0.0" y="150" width="311" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="Csb-Zf-olu"/>
@@ -39,7 +40,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JOx-tf-FWX">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="s4807120" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JOx-tf-FWX">
                                                 <rect key="frame" x="0.0" y="205" width="311" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="oFk-Nn-CL5"/>
@@ -129,12 +130,34 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="558" y="131"/>
+            <point key="canvasLocation" x="-319" y="131"/>
         </scene>
         <!--Map Tab Bar Controller-->
         <scene sceneID="Vdw-Gr-Qt9">
             <objects>
-                <tabBarController storyboardIdentifier="MapTabBarController" id="6xi-pT-hOV" userLabel="Map Tab Bar Controller" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MapTabBarController" id="6xi-pT-hOV" userLabel="Map Tab Bar Controller" customClass="TabBarViewController" customModule="On_the_Map" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="On the Map" id="RNI-cO-F0f">
+                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="n43-po-M8x">
+                            <color key="tintColor" red="0.0" green="0.62745098039215685" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="logout:" destination="6xi-pT-hOV" id="MJh-J9-0O3"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="6Ss-xp-SLM">
+                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="addLocation:" destination="6xi-pT-hOV" id="9Lf-q9-3IF"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="tZB-yw-vBQ">
+                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="refresh:" destination="6xi-pT-hOV" id="EAR-xO-hRO"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LFs-l6-fvz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -143,19 +166,35 @@
                     <connections>
                         <segue destination="d3L-SC-YpS" kind="relationship" relationship="viewControllers" id="Zn2-YR-j8S"/>
                         <segue destination="kqf-rd-UTS" kind="relationship" relationship="viewControllers" id="0zX-Ch-CE9"/>
+                        <segue destination="vs1-UQ-Aug" kind="presentation" identifier="AddLocationSegue" id="EJg-zk-oBP"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mdj-md-YdN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1304" y="131"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="paI-jT-fvE">
+            <objects>
+                <navigationController storyboardIdentifier="MapTabBarNavigationController" id="c07-uh-BeV" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Qfi-GU-tbd">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="6xi-pT-hOV" kind="relationship" relationship="rootViewController" id="NxC-lV-ehd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e41-ZR-ALb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="466" y="131"/>
+        </scene>
         <!--Map-->
         <scene sceneID="ldx-BP-RRu">
             <objects>
-                <navigationController id="d3L-SC-YpS" userLabel="Map" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="d3L-SC-YpS" userLabel="Map" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="icon_mapview-selected" landscapeImage="icon_mapview-deselected" id="OeN-HW-O81"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yKd-Eo-LpD">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -175,10 +214,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EJB-SM-tVV">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                             </mapView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="iKI-Q0-Koa">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="0.49505029965753422" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
@@ -196,32 +235,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vAh-Yp-7iY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="On the Map" id="C2R-I0-a8k">
-                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="y2Y-C8-v7i">
-                            <color key="tintColor" red="0.0" green="0.62745098039215685" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="logout:" destination="sIZ-4t-ab8" id="r7X-xm-kfO"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="guP-c9-yxp">
-                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="addLocation:" destination="sIZ-4t-ab8" id="lTE-Wu-aqn"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="9SQ-zD-ndh">
-                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="refresh:" destination="sIZ-4t-ab8" id="aPm-7j-Sh4"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="C2R-I0-a8k"/>
                     <connections>
                         <outlet property="activityIndicator" destination="iKI-Q0-Koa" id="LKw-9O-O9f"/>
                         <outlet property="mapView" destination="EJB-SM-tVV" id="fiQ-OC-2nq"/>
-                        <segue destination="vs1-UQ-Aug" kind="presentation" identifier="AddLocationSegue" id="m6h-c3-z1z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t7X-hN-26i" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -443,7 +460,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HKy-a3-smd">
-                                                    <rect key="frame" x="66" y="9" width="534" height="47"/>
+                                                    <rect key="frame" x="66" y="9" width="309" height="47"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kuei-Jung Hu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k8d-wz-U4y" userLabel="Name">
                                                             <rect key="frame" x="0.0" y="0.0" width="99" height="19.5"/>
@@ -482,7 +499,7 @@
                                 </connections>
                             </tableView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="8LS-fz-OJj">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="0.49505029965753422" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
@@ -497,32 +514,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2yj-ca-nPM"/>
                     </view>
-                    <navigationItem key="navigationItem" title="On the Map" id="tJe-xU-dn3">
-                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="n43-po-M8x">
-                            <color key="tintColor" red="0.0" green="0.62745098039215685" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="logout:" destination="vpn-9a-fDj" id="US2-VW-Ole"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="6Ss-xp-SLM">
-                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="addLocation:" destination="vpn-9a-fDj" id="9wf-IY-0RF"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="tZB-yw-vBQ">
-                                <color key="tintColor" red="0.094117647058823528" green="0.62745098039215685" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="refresh:" destination="vpn-9a-fDj" id="0Bi-km-n0v"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="tJe-xU-dn3"/>
                     <connections>
                         <outlet property="activityIndicator" destination="8LS-fz-OJj" id="wQD-1D-iNM"/>
                         <outlet property="studentsTableView" destination="RL3-sw-sAT" id="XLz-83-ICY"/>
-                        <segue destination="vs1-UQ-Aug" kind="presentation" identifier="AddLocationSegue" id="p7a-dy-e92"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hkr-0p-cWL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -532,10 +527,9 @@
         <!--Table-->
         <scene sceneID="dFO-Z8-8S2">
             <objects>
-                <navigationController id="kqf-rd-UTS" userLabel="Table" sceneMemberID="viewController">
+                <navigationController navigationBarHidden="YES" id="kqf-rd-UTS" userLabel="Table" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="icon_listview-selected" landscapeImage="icon_listview-deselected" id="jst-82-Fcs"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="QlV-Am-r6a">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -556,7 +550,4 @@
         <image name="icon_world" width="52" height="67"/>
         <image name="logo-u" width="62" height="62"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="m6h-c3-z1z"/>
-    </inferredMetricsTieBreakers>
 </document>

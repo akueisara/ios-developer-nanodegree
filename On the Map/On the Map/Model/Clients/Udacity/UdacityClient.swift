@@ -224,7 +224,7 @@ class UdacityClient : NSObject {
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error!)")
+                sendError("\(error!.localizedDescription)")
                 return
             }
             
@@ -244,16 +244,27 @@ class UdacityClient : NSObject {
             do {
                 parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
             } catch {
-                let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-                completionHandlerForStudentData(nil, NSError(domain: "getStudentLocations", code: 1, userInfo: userInfo))
+                sendError("Could not parse the data as JSON: '\(data)'")
+                return
             }
             
             if let results = parsedResult?[UdacityClient.JSONResponseKeys.StudentResults] as? [[String:AnyObject]] {
-                let students = StudentInformation.studentsFromResults(results)
-                self.students = students
-                completionHandlerForStudentData(students, nil)
+                var students = [StudentInformation]()
+                for result in results {
+                    if let jsonData = try? JSONSerialization.data(withJSONObject: result,options: []) {
+                        if let student = try? JSONDecoder().decode(StudentInformation.self, from: jsonData) {
+                            students.append(student)
+                        }
+                    }
+                }
+                if students.count != 0 {
+                    self.students = students
+                    completionHandlerForStudentData(self.students, nil)
+                } else {
+                    sendError("Could not parse getStudentLocations")
+                }
             } else {
-                completionHandlerForStudentData(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))
+                sendError("Could not parse getStudentLocations")
             }
         }
         
@@ -299,14 +310,22 @@ class UdacityClient : NSObject {
                 return
             }
             
-            if let results = parsedResult as? [String: Any] {
-                if let resultStudentSet = results["results"] as? [[String: AnyObject]], resultStudentSet.count != 0{
+            if let results = parsedResult?[UdacityClient.JSONResponseKeys.StudentResults] as? [[String:AnyObject]] {
+                var students = [StudentInformation]()
+                for result in results {
+                    if let jsonData = try? JSONSerialization.data(withJSONObject: result,options: []) {
+                        if let student = try? JSONDecoder().decode(StudentInformation.self, from: jsonData) {
+                            students.append(student)
+                        }
+                    }
+                }
+                if students.count != 0 {
                     self.showOverwrite = true
-                    let user = StudentInformation.studentsFromResults(resultStudentSet)[0]
-                    self.userFirstName = user.firstName!
-                    self.userLastName = user.lastName!
+                    let user = students[0]
+                    self.userFirstName = user.firstName
+                    self.userLastName = user.lastName
                     self.userObjectId = user.objectId
-                    self.userUniqueKey = user.uniqueKey!
+                    self.userUniqueKey = user.uniqueKey
                 }
             }
         }
@@ -324,7 +343,7 @@ class UdacityClient : NSObject {
         request.addValue(UdacityClient.Constants.ApplicationId, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(UdacityClient.Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = "{\"\(UdacityClient.JSONResponseKeys.StudentUniqueKey)\": \"\(student.uniqueKey!)\", \"\(UdacityClient.JSONResponseKeys.StudentFirstName)\": \"\(student.firstName!)\", \"\(UdacityClient.JSONResponseKeys.StudentLastName)\": \"\(student.lastName!)\",\"\(UdacityClient.JSONResponseKeys.StudentMapString)\": \"\(location)\", \"\(UdacityClient.JSONResponseKeys.StudentMediaURL)\": \"\(student.mediaURL!)\",\"\(UdacityClient.JSONResponseKeys.StudentLatitude)\": \(student.latitude!), \"\(UdacityClient.JSONResponseKeys.StudentLongitude)\": \(student.longitude!)}".data(using: String.Encoding.utf8)
+        request.httpBody = "{\"\(UdacityClient.JSONResponseKeys.StudentUniqueKey)\": \"\(student.uniqueKey)\", \"\(UdacityClient.JSONResponseKeys.StudentFirstName)\": \"\(student.firstName)\", \"\(UdacityClient.JSONResponseKeys.StudentLastName)\": \"\(student.lastName)\",\"\(UdacityClient.JSONResponseKeys.StudentMapString)\": \"\(location)\", \"\(UdacityClient.JSONResponseKeys.StudentMediaURL)\": \"\(student.mediaURL)\",\"\(UdacityClient.JSONResponseKeys.StudentLatitude)\": \(student.latitude), \"\(UdacityClient.JSONResponseKeys.StudentLongitude)\": \(student.longitude)}".data(using: String.Encoding.utf8)
         
         /* Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
@@ -332,12 +351,12 @@ class UdacityClient : NSObject {
             func sendError(_ error: String) {
                 print(error)
                 let userInfo = [NSLocalizedDescriptionKey : error]
-                completionHandler(false, NSError(domain: "updateUserData", code: 1, userInfo: userInfo))
+                completionHandler(false, NSError(domain: "addUserData", code: 1, userInfo: userInfo))
             }
             
             /* GUARD: Was there an error? */
             guard (error == nil) else {
-                sendError("There was an error with your request: \(error!)")
+                sendError("\(error!.localizedDescription)")
                 return
             }
             

@@ -79,7 +79,7 @@ class LoginViewController: UIViewController {
     private func completeLogin() {
         setUIEnabled(true)
         UdacityClient.sharedInstance.getUserPostedInfo(uniqueKey: UdacityClient.sharedInstance.userID!)
-        let controller = storyboard!.instantiateViewController(withIdentifier: "MapTabBarController") as! UITabBarController
+        let controller = storyboard!.instantiateViewController(withIdentifier: "MapTabBarNavigationController") as! UINavigationController
         present(controller, animated: true, completion: nil)
     }
 }

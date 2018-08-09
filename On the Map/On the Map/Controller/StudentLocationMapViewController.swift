@@ -11,7 +11,6 @@ import UIKit
 import MapKit
 
 class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
-    
     var annotations = [MKPointAnnotation]()
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -49,10 +48,15 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                 }
-                UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error Getting Data!")
+                if(error?.code == 1) {
+                    UdacityClient.sharedInstance.displayAlert(self, title: "", message: error?.localizedDescription ?? "Unknown Error")
+                } else {
+                    UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error getting data!")
+                }
             }
         }
     }
+    
     
     // MARK: - MKMapViewDelegate
     
@@ -96,48 +100,22 @@ class StudentLocationMapViewController: UIViewController, MKMapViewDelegate {
 
         for dictionary in locations {
             
-            if let lat = dictionary.latitude,  let long = dictionary.longitude{
-                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                
-                let first = dictionary.firstName
-                let last = dictionary.lastName
-                let mediaURL = dictionary.mediaURL
-                
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                annotation.title = "\(first ?? StudentInformation.FristNameDefault) \(last ?? StudentInformation.LastNameDefault)"
-                annotation.subtitle = mediaURL ?? StudentInformation.MediaURLDefault
-                
-                annotations.append(annotation)
-            }
+            let lat = dictionary.latitude
+            let long = dictionary.longitude
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+            
+            let first = dictionary.firstName
+            let last = dictionary.lastName
+            let mediaURL = dictionary.mediaURL
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = "\(first) \(last)"
+            annotation.subtitle = mediaURL
+            
+            annotations.append(annotation)
         }
 
         mapView.addAnnotations(annotations)
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func refresh(_ sender: Any) {
-        loadMapView()
-    }
-
-    @IBAction func addLocation(_ sender: Any) {
-        UdacityClient.sharedInstance.addLocation(self)
-    }
-    
-    @IBAction func logout(_ sender: Any) {
-        activityIndicator.startAnimating()
-        UdacityClient.sharedInstance.logout(completion: {
-            self.dismiss(animated: true, completion: {
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                }
-            })
-        }, failure: {
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-            }
-            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.UnableToLogout, message: ErrorMessage.CheckNetworkOrContactKuei)
-        })
     }
 }

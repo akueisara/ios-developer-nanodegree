@@ -59,9 +59,13 @@ class AddLocationViewController: UIViewController {
             let localSearch = MKLocalSearch(request: localSearchRequest)
             activityIndicator.startAnimating()
             localSearch.start { (localSearchResponse, error) -> Void in
-                if localSearchResponse == nil{
+                if let error = error {
                     self.activityIndicator.stopAnimating()
-                    UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidGeocode)
+                    if(error.localizedDescription.contains("Internet")) {
+                        UdacityClient.sharedInstance.displayAlert(self, title: "", message: error.localizedDescription)
+                    } else {
+                        UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.InvalidGeocode)
+                    }
                     return
                 }
                 

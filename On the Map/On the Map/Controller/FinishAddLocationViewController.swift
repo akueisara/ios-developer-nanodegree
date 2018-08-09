@@ -58,23 +58,23 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func finish(_ sender: Any) {
         activityIndicator.startAnimating()
-        let userData = StudentInformation(dictionary: [UdacityClient.JSONResponseKeys.StudentFirstName : UdacityClient.sharedInstance.userFirstName as AnyObject, UdacityClient.JSONResponseKeys.StudentLastName: UdacityClient.sharedInstance.userLastName as AnyObject, UdacityClient.JSONResponseKeys.StudentMediaURL: mediaURL as AnyObject, UdacityClient.JSONResponseKeys.StudentLatitude: latitude as AnyObject, UdacityClient.JSONResponseKeys.StudentLongitude: longitude as AnyObject, UdacityClient.JSONResponseKeys.StudentObjectId: UdacityClient.sharedInstance.userObjectId as AnyObject, UdacityClient.JSONResponseKeys.StudentUniqueKey: UdacityClient.sharedInstance.userUniqueKey as AnyObject])
+        let userData = StudentInformation(createdAt: "", firstName: UdacityClient.sharedInstance.userFirstName, lastName: UdacityClient.sharedInstance.userLastName, latitude: latitude, longitude: longitude, mapString: "", mediaURL: mediaURL, objectId: UdacityClient.sharedInstance.userObjectId, uniqueKey: UdacityClient.sharedInstance.userUniqueKey, updatedAt: "")
         if UdacityClient.sharedInstance.showOverwrite {
-            UdacityClient.sharedInstance.updateUserData(student: userData, location: location) { success, result in
+            UdacityClient.sharedInstance.updateUserData(student: userData, location: location) { success, error in
                 DispatchQueue.main.async{
-                    self.actionForMainQueue(success)
+                    self.actionForMainQueue(success, error)
                 }
             }
         } else {
-            UdacityClient.sharedInstance.postUserData(student: userData, location: location) { success, result in
+            UdacityClient.sharedInstance.postUserData(student: userData, location: location) { success, error in
                 DispatchQueue.main.async{
-                    self.actionForMainQueue(success)
+                    self.actionForMainQueue(success, error)
                 }
             }
         }
     }
     
-    private func actionForMainQueue(_ success: Bool) {
+    private func actionForMainQueue(_ success: Bool, _ error: NSError? = nil) {
         activityIndicator.stopAnimating()
         if success {
             UdacityClient.sharedInstance.showOverwrite = true
@@ -83,7 +83,11 @@ class FinishAddLocationViewController: UIViewController, MKMapViewDelegate {
             UdacityClient.sharedInstance.loadTableView = false
             dismiss(animated: true, completion: nil)
         } else {
-            UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.UpdateLocationError)
+            if(error?.code == 1) {
+                UdacityClient.sharedInstance.displayAlert(self, title: "", message: error?.localizedDescription ?? "Unknown error")
+            } else {
+                UdacityClient.sharedInstance.displayAlert(self, title: ErrorMessage.LocationNotFound, message: ErrorMessage.UpdateLocationError)
+            }
         }
     }
 }

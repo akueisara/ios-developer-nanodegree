@@ -9,7 +9,6 @@
 import Foundation
 
 struct Students {
-    static var sharedInstance = Students()
-    
-    var students: [StudentInformation] = [StudentInformation]()
+    static var shared = Students()
+    var students = [StudentInformation]()
 }

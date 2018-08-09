@@ -11,7 +11,7 @@ import UIKit
 // MARK: - TableViewController  : UIViewController
 
 class StudentLocationTableViewController: UIViewController {
-    
+
     // MARK: Properties
 //    var students: [StudentInformation] = [StudentInformation]()
     
@@ -41,7 +41,7 @@ class StudentLocationTableViewController: UIViewController {
         activityIndicator.startAnimating()
         UdacityClient.sharedInstance.getStudentLocations() { (students, error) in
             if let students = students {
-                Students.sharedInstance.students = students
+                Students.shared.students = students
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     self.studentsTableView.reloadData()
@@ -50,25 +50,13 @@ class StudentLocationTableViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                 }
-                UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error Getting Data!")
+                if(error?.code == 1) {
+                    UdacityClient.sharedInstance.displayAlert(self, title: "", message: error?.localizedDescription ?? "Unknown error")
+                } else {
+                    UdacityClient.sharedInstance.displayAlert(self, title: "", message: "Error getting data!")
+                }
             }
         }
-    }
-    
-    // MARK: Actions
-
-    @IBAction func refresh(_ sender: Any) {
-        loadTableView()
-    }
-    
-    @IBAction func addLocation(_ sender: Any) {
-        UdacityClient.sharedInstance.addLocation(self)
-    }
-    
-    @IBAction func logout(_ sender: Any) {
-        dismiss(animated: true, completion:{
-            UdacityClient.sharedInstance.logout()
-        })
     }
 }
 
@@ -80,31 +68,31 @@ extension StudentLocationTableViewController: UITableViewDelegate, UITableViewDa
         
         /* Get cell type */
         let cellReuseIdentifier = "StudentLocationTableViewCell"
-        let student = Students.sharedInstance.students[(indexPath as NSIndexPath).row]
+        let student = Students.shared.students[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! StudentLocationTableViewCell
         
         /* Set cell defaults */
-        cell.studentName?.text = "\(student.firstName ?? StudentInformation.FristNameDefault) \(student.lastName ?? StudentInformation.LastNameDefault)"
-        cell.studentMediaURL?.text = student.mediaURL ?? StudentInformation.MediaURLDefault
+        cell.studentName?.text = "\(student.firstName) \(student.lastName)"
+        cell.studentMediaURL?.text = student.mediaURL
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if Students.sharedInstance.students.count > 100 {
+        if Students.shared.students.count > 100 {
             return 100
         } else {
-            return Students.sharedInstance.students.count
+            return Students.shared.students.count
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let student = Students.sharedInstance.students[(indexPath as NSIndexPath).row]
+        let student = Students.shared.students[(indexPath as NSIndexPath).row]
         tableView.deselectRow(at: indexPath, animated: true)
         
         let app = UIApplication.shared
-        if UdacityClient.sharedInstance.checkURL(student.mediaURL ?? StudentInformation.MediaURLDefault){
-            app.open(URL(string: student.mediaURL!)!)
+        if UdacityClient.sharedInstance.checkURL(student.mediaURL){
+            app.open(URL(string: student.mediaURL)!)
         } else {
             UdacityClient.sharedInstance.displayAlert(self, title: "", message: ErrorMessage.InvalidLinkTitle)
         }
