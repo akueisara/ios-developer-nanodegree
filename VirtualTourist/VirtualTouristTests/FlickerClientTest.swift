@@ -11,31 +11,74 @@ import MapKit
 @testable import VirtualTourist
 
 class FlickerClientTest: XCTestCase {
-    
-    var flickerClient: FlickerClient!
 
     override func setUp() {
-        flickerClient = FlickerClient.sharedInstance()
+        super.setUp()
     }
 
     override func tearDown() {
-        flickerClient = nil
+        super.tearDown()
     }
 
-    func testFlickerClientGetPhotosByCor() {
-        let lat = 0.0
-        let long = 0.0
-        let url = URL(string:FlickerClient.Constants.ApiUrl + "?lat=\(lat)&long=\(long)&format=json&nojsoncallback=1")
-        flickerClient.getPhotos(url){(photos, error) in
+    func testGetMethodExpectedURL(){
+        let flickerClient = FlickerClient()
+        let mockURLSession = MockURLSession(data: nil, urlResponse: nil, error: nil)
+        flickerClient.session = mockURLSession
+        flickerClient.taskForGETMethod(FlickerClient.Methods.Rest, parameters: [:]) { (data, error) in
             
         }
+        guard let url = mockURLSession.url else { XCTFail(); return }
+        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        XCTAssertEqual(urlComponents?.host, FlickerClient.Constants.ApiHost)
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testGetPhotosExpectedResponse(){
+        XCTAssertEqual(1, 1)
+    }
+    
+    func testGetPhotosReturnBadJSON(){
+        XCTAssertEqual(1, 1)
     }
 
+}
+
+extension FlickerClientTest {
+  
+  class MockURLSession: SessionProtocol {
+    
+    var url: URL?
+    private let dataTask: MockTask
+    
+    init(data: Data?, urlResponse: URLResponse?, error: Error?) {
+      dataTask = MockTask(data: data, urlResponse: urlResponse, error: error)
+    }
+    
+    func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        
+        self.url = url
+        dataTask.completionHandler = completionHandler
+        return dataTask
+    }
+  }
+  
+  class MockTask: URLSessionDataTask {
+    private let data: Data?
+    private let urlResponse: URLResponse?
+    private let responseError: Error?
+    
+    typealias CompletionHandler = (Data?, URLResponse?, Error?)-> Void
+    var completionHandler: CompletionHandler?
+    
+    init(data: Data?, urlResponse: URLResponse?, error: Error?) {
+      self.data = data
+      self.urlResponse = urlResponse
+      self.responseError = error
+    }
+    
+    override func resume() {
+      DispatchQueue.main.async() {
+        self.completionHandler?(self.data, self.urlResponse, self.responseError)
+      }
+    }
+  }
 }

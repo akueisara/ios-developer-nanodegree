@@ -14,7 +14,6 @@
 		9C037598244F384700FC57B4 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C037596244F384700FC57B4 /* VirtualTourist.xcdatamodeld */; };
 		9C03759A244F384900FC57B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C037599244F384900FC57B4 /* Assets.xcassets */; };
 		9C03759D244F384900FC57B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C03759B244F384900FC57B4 /* LaunchScreen.storyboard */; };
-		9C0375A8244F384900FC57B4 /* VirtualTouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0375A7244F384900FC57B4 /* VirtualTouristTests.swift */; };
 		9C0375B3244F384900FC57B4 /* VirtualTouristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0375B2244F384900FC57B4 /* VirtualTouristUITests.swift */; };
 		9C0375C4244F461B00FC57B4 /* FlickerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0375C3244F461B00FC57B4 /* FlickerClient.swift */; };
 		9C0375C6244F463200FC57B4 /* FlickerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0375C5244F463200FC57B4 /* FlickerConstants.swift */; };
@@ -55,7 +54,6 @@
 		9C03759C244F384900FC57B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C03759E244F384900FC57B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C0375A3244F384900FC57B4 /* VirtualTouristTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualTouristTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C0375A7244F384900FC57B4 /* VirtualTouristTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualTouristTests.swift; sourceTree = "<group>"; };
 		9C0375A9244F384900FC57B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C0375AE244F384900FC57B4 /* VirtualTouristUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualTouristUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C0375B2244F384900FC57B4 /* VirtualTouristUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualTouristUITests.swift; sourceTree = "<group>"; };
@@ -135,7 +133,6 @@
 		9C0375A6244F384900FC57B4 /* VirtualTouristTests */ = {
 			isa = PBXGroup;
 			children = (
-				9C0375A7244F384900FC57B4 /* VirtualTouristTests.swift */,
 				9C0375A9244F384900FC57B4 /* Info.plist */,
 				9C0375C7244F4A6200FC57B4 /* FlickerClientTest.swift */,
 			);
@@ -373,7 +370,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C0375A8244F384900FC57B4 /* VirtualTouristTests.swift in Sources */,
 				9C0375C8244F4A6200FC57B4 /* FlickerClientTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

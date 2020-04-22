@@ -23,7 +23,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func downloadImage(_ photo: Photo) {
-        FlickerClient.sharedInstance().getPhotoImageData(photo: photo) { (data, error) in
+        FlickerClient().getPhotoImageData(photo: photo) { (data, error) in
             guard (error == nil) else {
                 print(error!.localizedDescription)
                 return

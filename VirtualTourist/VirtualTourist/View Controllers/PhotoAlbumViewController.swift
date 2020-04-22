@@ -41,7 +41,8 @@ class PhotoAlbumViewController: UIViewController {
     
 
     func getPhotosFromFlicker() {
-        FlickerClient.sharedInstance().getPhotos(pin: selectedPin, page: 1) { (images, pages, error) in
+        let coord = CLLocationCoordinate2D(latitude: selectedPin.lat, longitude: selectedPin.lon)
+        FlickerClient().getPhotos(coord: coord, page: 1) { (images, pages, error) in
             if let images = images {
                 for image in images {
                     CoreDataController.shared.addPhoto(id: image.id, imageURL: image.photoImageURL(), imageData: nil, pin: self.selectedPin) { photo in

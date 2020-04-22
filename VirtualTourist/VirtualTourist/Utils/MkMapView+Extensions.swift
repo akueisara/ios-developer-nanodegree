@@ -13,6 +13,6 @@ extension MKMapView {
     func addAnnotationToMap(coordinate: CLLocationCoordinate2D) {
         let pinAnnotation: MKPointAnnotation = MKPointAnnotation()
         pinAnnotation.coordinate = coordinate
-            addAnnotation(pinAnnotation)
+        addAnnotation(pinAnnotation)
     }
 }

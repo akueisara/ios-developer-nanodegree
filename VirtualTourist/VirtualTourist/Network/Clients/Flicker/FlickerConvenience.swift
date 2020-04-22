@@ -12,11 +12,11 @@ import MapKit
 
 extension FlickerClient {
     
-    func getPhotos(pin: Pin, page: Int, completionHandlerForPhotos: @escaping (_ result: [FlickerImage]?, _ pages: Int?, _ error: NSError?) -> Void) {
+    func getPhotos(coord: CLLocationCoordinate2D, page: Int, completionHandlerForPhotos: @escaping (_ result: [FlickerImage]?, _ pages: Int?, _ error: NSError?) -> Void) {
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         let parameters = [FlickerClient.ParameterKeys.Method : FlickerClient.ParameterValues.SearchMethod,
-            FlickerClient.ParameterKeys.Latitude: String(pin.lat),
-                          FlickerClient.ParameterKeys.Longitude: String(pin.lon)]
+                          FlickerClient.ParameterKeys.Latitude: String(coord.latitude),
+                          FlickerClient.ParameterKeys.Longitude: String(coord.longitude)]
         let method: String = FlickerClient.Methods.Rest
         
         /* 2. Make the request */

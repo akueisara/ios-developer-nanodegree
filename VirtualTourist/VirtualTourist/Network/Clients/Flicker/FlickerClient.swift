@@ -11,21 +11,11 @@ import MapKit
 // MARK: - FlickerClient: NSObject
 
 class FlickerClient : NSObject {
-    
-    // MARK: Shared Instance
-      
-      class func sharedInstance() -> FlickerClient {
-          struct Singleton {
-              static var sharedInstance = FlickerClient()
-          }
-          return Singleton.sharedInstance
-      }
-    
+
     // MARK: Properties
     
     // shared session
-    var session = URLSession.shared
-    
+    lazy var session: SessionProtocol = URLSession.shared
     
     // MARK: Initializers
     
@@ -43,12 +33,11 @@ class FlickerClient : NSObject {
          parametersWithApiKey["format"] = "json" as AnyObject?
          parametersWithApiKey["nojsoncallback"] = 1 as AnyObject?
          
-         /* 2/3. Build the URL, Configure the request */
-        print(flickerURLFromParameters(parametersWithApiKey, withPathExtension: method))
-         let request = NSMutableURLRequest(url: flickerURLFromParameters(parametersWithApiKey, withPathExtension: method))
+         /* 2/3. Build the URL */
+         let url = flickerURLFromParameters(parametersWithApiKey, withPathExtension: method)
          
          /* 4. Make the request */
-         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
+         let task = session.dataTask(with: url) { (data, response, error) in
              
              func sendError(_ error: String) {
                  print(error)
@@ -89,12 +78,11 @@ class FlickerClient : NSObject {
         /* 1. Set the parameters */
         // There are none...
         
-        /* 2/3. Build the URL and configure the request */
+        /* 2/3. Build the URL */
         let baseURL = URL(string: imageURL)!
-        let request = URLRequest(url: baseURL)
         
         /* 4. Make the request */
-        let task = session.dataTask(with: request) { (data, response, error) in
+        let task = session.dataTask(with: baseURL) { (data, response, error) in
             
             func sendError(_ error: String) {
                 print(error)
@@ -175,3 +163,11 @@ class FlickerClient : NSObject {
     }
 }
     
+protocol SessionProtocol {
+  func dataTask(
+    with url: URL,
+    completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+    -> URLSessionDataTask
+}
+
+extension URLSession: SessionProtocol {}
