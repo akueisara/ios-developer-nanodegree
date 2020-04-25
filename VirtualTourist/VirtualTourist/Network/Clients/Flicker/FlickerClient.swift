@@ -25,16 +25,16 @@ class FlickerClient : NSObject {
     
     // MARK: GET
      
-     func taskForGETMethod(_ method: String, parameters: [String:AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+     func taskForGETMethod(parameters: [String:AnyObject], completionHandlerForGET: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask {
          
          /* 1. Set the parameters */
          var parametersWithApiKey = parameters
          parametersWithApiKey[ParameterKeys.ApiKey] = Constants.ApiKey as AnyObject?
-         parametersWithApiKey["format"] = "json" as AnyObject?
-         parametersWithApiKey["nojsoncallback"] = 1 as AnyObject?
+        parametersWithApiKey[ParameterKeys.Format] = ParameterValues.Json as AnyObject?
+        parametersWithApiKey[ParameterKeys.NoJsonCallback] = ParameterValues.JsonCallbackValue as AnyObject?
          
          /* 2. Build the URL */
-         let url = flickerURLFromParameters(parametersWithApiKey, withPathExtension: method)
+         let url = flickerURLFromParameters(parametersWithApiKey)
          
          /* 3. Make the request */
          let task = session.dataTask(with: url) { (data, response, error) in
@@ -97,10 +97,10 @@ class FlickerClient : NSObject {
             }
             
             /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
-                sendError("Your request returned a status code other than 2xx!")
-                return
-            }
+//            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+//                sendError("Your request returned a status code other than 2xx!")
+//                return
+//            }
             
             /* GUARD: Was there any data returned? */
             guard let data = data else {
@@ -154,7 +154,7 @@ class FlickerClient : NSObject {
         components.path = FlickerClient.Constants.ApiPath + (withPathExtension ?? "")
         components.queryItems = [URLQueryItem]()
         
-        for (key, value) in parameters {
+        for (key, value) in parameters.sorted( by: { $0.0 < $1.0 }) {
             let queryItem = URLQueryItem(name: key, value: "\(value)")
             components.queryItems!.append(queryItem)
         }

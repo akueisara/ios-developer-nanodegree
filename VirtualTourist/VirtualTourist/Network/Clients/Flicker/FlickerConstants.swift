@@ -19,20 +19,14 @@ extension FlickerClient {
         // MARK: URLs
         static let ApiScheme = "https"
         static let ApiHost = "www.flickr.com"
-        static let ApiPath = "/services/"
-    }
-    
-    // MARK: Methods
-    struct Methods {
-        
-        // MARK: Photos
-        static let Rest = "rest"
-        
+        static let ApiPath = "/services/rest"
     }
     
     // MARK: Parameter Keys
     struct ParameterKeys {
         static let ApiKey = "api_key"
+        static let Format = "format"
+        static let NoJsonCallback = "nojsoncallback"
         static let Method = "method"
         static let Latitude = "lat"
         static let Longitude = "lon"
@@ -41,5 +35,7 @@ extension FlickerClient {
     // MARK: Parameter Values
     struct ParameterValues {
         static let SearchMethod = "flickr.photos.search"
+        static let Json = "json"
+        static let JsonCallbackValue = 1
     }
 }

@@ -17,10 +17,9 @@ extension FlickerClient {
         let parameters = [FlickerClient.ParameterKeys.Method : FlickerClient.ParameterValues.SearchMethod,
                           FlickerClient.ParameterKeys.Latitude: String(coord.latitude),
                           FlickerClient.ParameterKeys.Longitude: String(coord.longitude)]
-        let method: String = FlickerClient.Methods.Rest
         
         /* 2. Make the request */
-        let _ = taskForGETMethod(method, parameters: parameters as [String:AnyObject]) { (results, error) in
+        let _ = taskForGETMethod(parameters: parameters as [String:AnyObject]) { (results, error) in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
