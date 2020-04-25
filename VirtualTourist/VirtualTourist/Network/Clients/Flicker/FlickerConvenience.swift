@@ -26,9 +26,9 @@ extension FlickerClient {
             if let error = error {
                 completionHandlerForPhotos(nil, nil, error)
             } else {
-                if let photosResults = results?["photos"] as? [String:AnyObject], let imageResults = photosResults["photo"] as? [[String:AnyObject]] {
+                if let photosResults = results?["photos"] as? [String:AnyObject], let pages = photosResults["pages"] as? Int, let imageResults = photosResults["photo"] as? [[String:AnyObject]] {
                     let photos = FlickerImage.flickerImagesFromResults(imageResults)
-                    completionHandlerForPhotos(photos, nil, nil)
+                    completionHandlerForPhotos(photos, pages, nil)
                 } else {
                     completionHandlerForPhotos(nil, nil, NSError(domain: "getPhotos parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getPhotos"]))
                 }
@@ -37,13 +37,15 @@ extension FlickerClient {
     }
     
     func getPhotoImageData(photo: Photo, completionHandlerForPhotoImageData: @escaping (_ result: Data?, _ error: NSError?) -> Void) {
-        let _ = taskForGETImage(photo.imageUrl!) { (data, error) in
-            
-            /* Send the desired value(s) to completion handler */
-            if let error = error {
-                completionHandlerForPhotoImageData(nil, error)
-            } else {
-                completionHandlerForPhotoImageData(data, nil)
+        if let photoImageUrl = photo.imageUrl {
+            let _ = taskForGETImage(photoImageUrl) { (data, error) in
+                
+                /* Send the desired value(s) to completion handler */
+                if let error = error {
+                    completionHandlerForPhotoImageData(nil, error)
+                } else {
+                    completionHandlerForPhotoImageData(data, nil)
+                }
             }
         }
     }

@@ -14,8 +14,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     
     func setupPhoto(_ photo: Photo) {
-        activityIndicator.startAnimating()
         if photo.imageData == nil {
+            activityIndicator.startAnimating()
             downloadImage(photo)
         } else {
             displayImage(data: photo.imageData!)
@@ -24,14 +24,16 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     func downloadImage(_ photo: Photo) {
         FlickerClient().getPhotoImageData(photo: photo) { (data, error) in
-            guard (error == nil) else {
+            guard error == nil else {
                 print(error!.localizedDescription)
                 return
             }
-            DispatchQueue.main.async {
-                self.displayImage(data: data!)
+
+            CoreDataController.shared.saveImageDataToPhoto(photo: photo, imageData: data!) {
+                DispatchQueue.main.async {
+                    self.displayImage(data: data!)
+                }
             }
-            CoreDataController.shared.saveImageDataToPhoto(photo: photo, imageData: data!)
         }
     }
     

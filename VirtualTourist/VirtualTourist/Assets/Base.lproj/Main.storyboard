@@ -69,7 +69,7 @@
                                 </constraints>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="UbU-2x-cOY">
-                                <rect key="frame" x="0.0" y="236" width="414" height="577"/>
+                                <rect key="frame" x="0.0" y="244" width="414" height="521"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gnT-Gy-BkX">
                                     <size key="itemSize" width="94" height="94"/>
@@ -107,27 +107,42 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="sj9-Gh-Lnh" id="7vR-q1-00J"/>
+                                    <outlet property="delegate" destination="sj9-Gh-Lnh" id="bwU-Jv-IGg"/>
+                                </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRe-ta-L0n">
+                                <rect key="frame" x="0.0" y="765" width="414" height="48"/>
+                                <color key="backgroundColor" white="0.92108126426940629" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="UHg-28-I0l"/>
+                                </constraints>
+                                <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="bottomButtonAction:" destination="sj9-Gh-Lnh" eventType="touchUpInside" id="OEs-3I-Er4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="tVK-dV-xBG" firstAttribute="trailing" secondItem="Mov-c0-vc8" secondAttribute="trailing" id="3pm-1a-TFl"/>
-                            <constraint firstItem="UbU-2x-cOY" firstAttribute="top" secondItem="Mov-c0-vc8" secondAttribute="bottom" constant="-8" id="AfD-Cg-794"/>
+                            <constraint firstItem="UbU-2x-cOY" firstAttribute="top" secondItem="Mov-c0-vc8" secondAttribute="bottom" id="AfD-Cg-794"/>
                             <constraint firstItem="UbU-2x-cOY" firstAttribute="leading" secondItem="tVK-dV-xBG" secondAttribute="leading" id="Amt-yw-f4L"/>
-                            <constraint firstItem="tVK-dV-xBG" firstAttribute="bottom" secondItem="UbU-2x-cOY" secondAttribute="bottom" id="Bc5-pL-Q8n"/>
+                            <constraint firstItem="sRe-ta-L0n" firstAttribute="leading" secondItem="tVK-dV-xBG" secondAttribute="leading" id="B4N-9t-hZ0"/>
+                            <constraint firstItem="tVK-dV-xBG" firstAttribute="trailing" secondItem="sRe-ta-L0n" secondAttribute="trailing" id="KCT-LJ-wyE"/>
+                            <constraint firstItem="sRe-ta-L0n" firstAttribute="top" secondItem="UbU-2x-cOY" secondAttribute="bottom" id="P42-1o-TzG"/>
                             <constraint firstItem="Mov-c0-vc8" firstAttribute="top" secondItem="tVK-dV-xBG" secondAttribute="top" id="hvn-lF-9Fy"/>
                             <constraint firstItem="tVK-dV-xBG" firstAttribute="trailing" secondItem="UbU-2x-cOY" secondAttribute="trailing" id="k0N-TT-Fs5"/>
                             <constraint firstItem="Mov-c0-vc8" firstAttribute="leading" secondItem="tVK-dV-xBG" secondAttribute="leading" id="kOT-1M-GIQ"/>
+                            <constraint firstItem="tVK-dV-xBG" firstAttribute="bottom" secondItem="sRe-ta-L0n" secondAttribute="bottom" id="nrt-gN-Pao"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tVK-dV-xBG"/>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="n6S-rU-UIO"/>
-                        <barButtonItem title="New Collection" id="FE6-zJ-ytD"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="cEa-Ts-cHO"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="bottomButton" destination="sRe-ta-L0n" id="ufP-PI-DTB"/>
                         <outlet property="collectionView" destination="UbU-2x-cOY" id="YAi-Hq-afP"/>
                         <outlet property="mapView" destination="Mov-c0-vc8" id="Ik4-G1-DTm"/>
                     </connections>

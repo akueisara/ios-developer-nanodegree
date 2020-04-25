@@ -105,7 +105,8 @@ extension CoreDataController {
     }
     
     func addPhoto(id:String, imageURL: String, imageData: Data?, pin: Pin, completionHandler: (Photo) -> Void) {
-        if fetchPhotoBy(id: id) != nil {
+        if let photo = fetchPhotoBy(id: id) {
+            completionHandler(photo)
             return
         }
         let photo = Photo(context: viewContext)
@@ -118,9 +119,43 @@ extension CoreDataController {
         }
     }
     
-    func saveImageDataToPhoto(photo: Photo, imageData: Data) {
+    func addPhotos(images: [FlickerImage], pin: Pin, completionHandler: ([Photo]) -> Void) {
+        var photos: [Photo] = []
+        for image in images {
+            let photo = Photo(context: viewContext)
+            photo.id = image.id
+            photo.imageUrl = image.photoImageURL()
+            photo.imageData = nil
+            photo.pin = pin
+            photos.append(photo)
+        }
+        if saveContext() {
+            completionHandler(photos)
+        }
+    }
+    
+    func deletePhoto(photo: Photo, completionHandler: () -> Void) {
+        viewContext.delete(photo)
+        if saveContext() {
+            completionHandler()
+        }
+    }
+    
+    func deletePhotos(pin: Pin, completionHandler: (() -> Void)? = nil) {
+        let photos  = loadPhotos(pin: pin)
+        for photo in photos {
+            viewContext.delete(photo)
+        }
+        if saveContext() {
+            completionHandler?()
+        }
+    }
+    
+    func saveImageDataToPhoto(photo: Photo, imageData: Data, completionHandler: () -> Void) {
         photo.imageData = imageData
-        saveContext()
+        if saveContext() {
+            completionHandler()
+        }
     }
     
 }

@@ -33,10 +33,10 @@ class FlickerClient : NSObject {
          parametersWithApiKey["format"] = "json" as AnyObject?
          parametersWithApiKey["nojsoncallback"] = 1 as AnyObject?
          
-         /* 2/3. Build the URL */
+         /* 2. Build the URL */
          let url = flickerURLFromParameters(parametersWithApiKey, withPathExtension: method)
          
-         /* 4. Make the request */
+         /* 3. Make the request */
          let task = session.dataTask(with: url) { (data, response, error) in
              
              func sendError(_ error: String) {
@@ -46,7 +46,7 @@ class FlickerClient : NSObject {
              }
              
              /* GUARD: Was there an error? */
-             guard (error == nil) else {
+             guard error == nil else {
                  sendError("There was an error with your request: \(error!)")
                  return
              }
@@ -63,11 +63,11 @@ class FlickerClient : NSObject {
                  return
              }
              
-             /* 5/6. Parse the data and use the data (happens in completion handler) */
+             /* 4/5. Parse the data and use the data (happens in completion handler) */
              self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
          }
          
-         /* 7. Start the request */
+         /* 6. Start the request */
          task.resume()
          
          return task
@@ -78,10 +78,10 @@ class FlickerClient : NSObject {
         /* 1. Set the parameters */
         // There are none...
         
-        /* 2/3. Build the URL */
+        /* 2. Build the URL */
         let baseURL = URL(string: imageURL)!
         
-        /* 4. Make the request */
+        /* 3. Make the request */
         let task = session.dataTask(with: baseURL) { (data, response, error) in
             
             func sendError(_ error: String) {
@@ -108,11 +108,11 @@ class FlickerClient : NSObject {
                 return
             }
             
-            /* 5/6. Parse the data and use the data (happens in completion handler) */
+            /* 4/5. Parse the data and use the data (happens in completion handler) */
             completionHandlerForImage(data, nil)
         }
         
-        /* 7. Start the request */
+        /* 6. Start the request */
         task.resume()
         
         return task
