@@ -18,21 +18,55 @@ let loopCount = 0 // 0 means loop forever
 
 extension UIViewController {
     
+    @IBAction func presentVideoOptions() {
+        
+        if !UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+            launchPhotoLibrary()
+        } else {
+            let newGifActionSheet = UIAlertController(title: "Create new GIF", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+            
+            let recordView = UIAlertAction(title: "Record a Video", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+                self.launchVideoCamera()
+            })
+            
+            let chooseFromExisting = UIAlertAction(title: "Choose from Existing", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+                self.launchPhotoLibrary()
+            })
+            
+            let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+            
+            newGifActionSheet.addAction(recordView)
+            newGifActionSheet.addAction(chooseFromExisting)
+            newGifActionSheet.addAction(cancel)
+            
+            present(newGifActionSheet, animated: true, completion: nil)
+            let pinkColor = UIColor(red: 255.0/255.0, green: 65.0/255.0, blue: 112.0/255.0, alpha: 1.0)
+            newGifActionSheet.view.tintColor = pinkColor
+        }
+    }
+    
     // MARK: Select Video
     
-    @IBAction func launchVideoCamera(sender: AnyObject) {
+    private func launchVideoCamera() {
+        present(pickerControllerWithSource(source: UIImagePickerController.SourceType.camera), animated: true, completion: nil)
+    }
+    
+    private func launchPhotoLibrary() {
+        present(pickerControllerWithSource(source: UIImagePickerController.SourceType.photoLibrary), animated: true, completion: nil)
+    }
+    
+    private func pickerControllerWithSource(source: UIImagePickerController.SourceType) -> UIImagePickerController {
         
         // create imagePicker
-        let recordVideoViewController = UIImagePickerController()
-        
+        let picker = UIImagePickerController()
+               
         // set properties: sourcetype, mediatype, allowsEditing, delegate
-        recordVideoViewController.sourceType = UIImagePickerController.SourceType.camera
-        recordVideoViewController.mediaTypes = [kUTTypeMovie as String]
-        recordVideoViewController.allowsEditing = false
-        recordVideoViewController.delegate = self
-        
-        // present controller
-        present(recordVideoViewController, animated: true, completion: nil)
+        picker.sourceType = source
+        picker.mediaTypes = [kUTTypeMovie as String]
+        picker.allowsEditing = false
+        picker.delegate = self
+
+        return picker
     }
 }
 
@@ -62,7 +96,7 @@ extension UIViewController: UIImagePickerControllerDelegate {
     }
     
     // GIF conversion methods
-    func convertVideoToGIF(videoURL: URL) {
+    private func convertVideoToGIF(videoURL: URL) {
         let regift = Regift(sourceFileURL: videoURL as URL, frameCount: frameCount, delayTime: delayTime, loopCount: loopCount)
         let gifURL = regift.createGif()
         let gif = Gif(url:gifURL!, videoURL: videoURL, caption: nil)
@@ -70,7 +104,7 @@ extension UIViewController: UIImagePickerControllerDelegate {
         displayGif(gif: gif)
     }
     
-    func displayGif(gif: Gif) {
+    private func displayGif(gif: Gif) {
         let gitEditorVC = storyboard?.instantiateViewController(withIdentifier: "GifEditorViewController") as! GifEditorViewController
         gitEditorVC.gif = gif
         navigationController?.pushViewController(gitEditorVC, animated: true)
