@@ -33,9 +33,18 @@ class SavedGifsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         emptyView.isHidden = savedGifs.count != 0
         collectionView.reloadData()
+        
+        title = "My Collections"
+        applyTheme(theme: .Light)
+        navigationController?.navigationBar.isHidden = savedGifs.count == 0
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        title = ""
+        navigationController?.navigationBar.isHidden = false
     }
     
     func showWelcome() {

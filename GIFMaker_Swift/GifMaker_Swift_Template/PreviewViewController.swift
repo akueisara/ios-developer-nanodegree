@@ -18,10 +18,16 @@ class PreviewViewController: UIViewController {
     
     var gif: Gif?
     weak var delegate: PreviewViewControllerDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        gifImageView.image = gif?.gifImage
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        gifImageView.image = gif?.gifImage
+        title = "Preview"
+        applyTheme(theme: .Dark)
     }
     
     @IBAction func shareGif(sender: AnyObject) {

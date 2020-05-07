@@ -10,20 +10,26 @@ import UIKit
 
 class GifEditorViewController: UIViewController {
     
-    
     @IBOutlet weak var gifImageView: UIImageView!
     @IBOutlet weak var captionTextField: UITextField!
-    var gif: Gif? 
+    var gif: Gif?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        gifImageView.image = gif?.gifImage
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
-        gifImageView.image = gif?.gifImage
+        title = "Add a Caption"
+        applyTheme(theme: .Dark)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
+        title = ""
     }
     
     @IBAction func presentPreview(sender: AnyObject) {

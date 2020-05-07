@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         gifImageView.image = gif?.gifImage
+        applyTheme(theme: .DarkTranslucent)
     }
     
     @IBAction func shareGif(sender: UIButton) {
