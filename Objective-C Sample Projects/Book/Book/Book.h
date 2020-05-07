@@ -13,12 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Book : NSObject
 
-@property (nonatomic) NSString *title;
-@property (nonatomic) Person *author;
+@property (nonatomic) NSString * _Nonnull title;
+@property (nonatomic) Person * _Nonnull author;
+@property (nonatomic) Person * _Nullable editor;
 @property (nonatomic) int yearOfPublication;
 
--(instancetype)initWithTitle:(NSString*)title
-                      author:(Person*)author
+-(instancetype)initWithTitle:(NSString* _Nonnull)title
+                      author:(Person* _Nonnull)author
                         year:(int)year;
 
 @end
