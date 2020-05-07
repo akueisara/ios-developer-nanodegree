@@ -25,9 +25,10 @@ class SavedGifsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        showWelcome()
         if let gifs = NSKeyedUnarchiver.unarchiveObject(withFile: gifsFilePath) as? [Gif] {
             savedGifs = gifs
-        }   
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +36,13 @@ class SavedGifsViewController: UIViewController {
         
         emptyView.isHidden = savedGifs.count != 0
         collectionView.reloadData()
+    }
+    
+    func showWelcome() {
+        if UserDefaults.standard.bool(forKey: "WelcomeViewSeen") != true {
+            let welcomeViewController = storyboard?.instantiateViewController(withIdentifier: "WelcomeViewController") as! WelcomeViewController
+            navigationController?.pushViewController(welcomeViewController, animated: true)
+        }
     }
 
 }
@@ -52,6 +60,15 @@ extension SavedGifsViewController: UICollectionViewDelegate, UICollectionViewDat
         let gif = savedGifs[indexPath.item]
         cell.configureForGif(gif)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let gif = savedGifs[indexPath.item]
+        let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        detailVC.gif = gif
+        
+        detailVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        present(detailVC, animated: true, completion: nil)
     }
     
 }

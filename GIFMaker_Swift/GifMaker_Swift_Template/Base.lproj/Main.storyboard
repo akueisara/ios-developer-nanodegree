@@ -315,6 +315,9 @@
                                 <state key="normal" title="SHARE">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="shareGifWithSender:" destination="Ilf-GF-t1a" eventType="touchUpInside" id="RaZ-gj-i03"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fMj-xi-5Fm">
                                 <rect key="frame" x="20" y="261" width="374" height="374"/>
@@ -329,6 +332,9 @@
                                     <constraint firstAttribute="width" constant="44" id="aAD-pY-dof"/>
                                 </constraints>
                                 <state key="normal" image="Close"/>
+                                <connections>
+                                    <action selector="closeWithSender:" destination="Ilf-GF-t1a" eventType="touchUpInside" id="KHk-1f-omB"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.18039215689999999" green="0.23921568630000001" blue="0.28235294119999998" alpha="0.89705230496453903" colorSpace="custom" customColorSpace="sRGB"/>
@@ -344,6 +350,9 @@
                             <constraint firstItem="8DJ-Ka-ETF" firstAttribute="top" secondItem="tie-bE-ygI" secondAttribute="bottom" constant="20" id="zYz-Sa-xDb"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="gifImageView" destination="fMj-xi-5Fm" id="Iio-TG-J7u"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BEl-4x-y0s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

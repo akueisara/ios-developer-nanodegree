@@ -12,16 +12,12 @@ class WelcomeViewController: UIViewController {
     
     @IBOutlet weak var gifImageView: UIImageView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let proofOfConceptGif = UIImage.gif(name: "hotlineBling")
         gifImageView.image = proofOfConceptGif
+        
+        UserDefaults.standard.set(true, forKey: "WelcomeViewSeen")
     }
 
 }

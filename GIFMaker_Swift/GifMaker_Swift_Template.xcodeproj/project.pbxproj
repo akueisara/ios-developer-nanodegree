@@ -15,6 +15,7 @@
 		9C375E612461DBB100A25F31 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C375E602461DBB100A25F31 /* PreviewViewController.swift */; };
 		9C54E93A2463D302008EA17D /* SavedGifsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54E9392463D302008EA17D /* SavedGifsViewController.swift */; };
 		9C54E9402463DA73008EA17D /* GifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54E93F2463DA73008EA17D /* GifCell.swift */; };
+		9C54E9422463F0BE008EA17D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C54E9412463F0BE008EA17D /* DetailViewController.swift */; };
 		A93B3B081D2D3F7900BE1662 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A93B3B041D2D3F7900BE1662 /* LaunchScreen.xib */; };
 		A93B3B091D2D3F7900BE1662 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A93B3B061D2D3F7900BE1662 /* Main.storyboard */; };
 		EDDFC4DC1CE261A600A586CA /* tinaFeyHiFive.gif in Resources */ = {isa = PBXBuildFile; fileRef = EDDFC4DB1CE261A600A586CA /* tinaFeyHiFive.gif */; };
@@ -35,6 +36,7 @@
 		9C375E602461DBB100A25F31 /* PreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		9C54E9392463D302008EA17D /* SavedGifsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGifsViewController.swift; sourceTree = "<group>"; };
 		9C54E93F2463DA73008EA17D /* GifCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifCell.swift; sourceTree = "<group>"; };
+		9C54E9412463F0BE008EA17D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A93B3B051D2D3F7900BE1662 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		A93B3B071D2D3F7900BE1662 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EDDFC4DB1CE261A600A586CA /* tinaFeyHiFive.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = tinaFeyHiFive.gif; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				9C54E9392463D302008EA17D /* SavedGifsViewController.swift */,
 				9C375E602461DBB100A25F31 /* PreviewViewController.swift */,
 				9C54E93F2463DA73008EA17D /* GifCell.swift */,
+				9C54E9412463F0BE008EA17D /* DetailViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C54E9422463F0BE008EA17D /* DetailViewController.swift in Sources */,
 				9C375E552461AD6600A25F31 /* UIImage+Gif.swift in Sources */,
 				9C54E93A2463D302008EA17D /* SavedGifsViewController.swift in Sources */,
 				9C54E9402463DA73008EA17D /* GifCell.swift in Sources */,
