@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SavedGifsViewController: UIViewController, PreviewViewControllerDelegate {
+class SavedGifsViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var emptyView: UIStackView!
@@ -16,15 +16,25 @@ class SavedGifsViewController: UIViewController, PreviewViewControllerDelegate {
     var savedGifs = [Gif]()
     let cellMargin: CGFloat = 12.0
     
+    var gifsFilePath: String {
+        let directories = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsPath = directories[0]
+        let gifsPath = documentsPath.appending("/savedGifs")
+        return gifsPath
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if let gifs = NSKeyedUnarchiver.unarchiveObject(withFile: gifsFilePath) as? [Gif] {
+            savedGifs = gifs
+        }   
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         emptyView.isHidden = savedGifs.count != 0
         collectionView.reloadData()
-    }
-    
-    func previewVC(preview: PreviewViewController, didSaveGif gif: Gif) {
-        savedGifs.append(gif)
     }
 
 }
@@ -53,6 +63,17 @@ extension SavedGifsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.size.width - cellMargin * 2.0)/2.0
         return CGSize(width: width, height: width)
+    }
+    
+}
+
+// MARK: - PreviewViewControllerDelegate
+
+extension SavedGifsViewController: PreviewViewControllerDelegate {
+    
+    func previewVC(preview: PreviewViewController, didSaveGif gif: Gif) {
+        savedGifs.append(gif)
+        NSKeyedArchiver.archiveRootObject(savedGifs, toFile: gifsFilePath)
     }
     
 }
