@@ -10,6 +10,7 @@ import UIKit
 
 class GifEditorViewController: UIViewController {
     
+    
     @IBOutlet weak var gifImageView: UIImageView!
     @IBOutlet weak var captionTextField: UITextField!
     var gif: Gif? 
@@ -33,6 +34,7 @@ class GifEditorViewController: UIViewController {
         let gifURL = regift.createGif(captionTextField.text, font: cationFont)!
         let newGif = Gif(url: gifURL, videoURL: gif!.videoURL, caption: captionTextField.text)
         previewVC.gif = newGif
+        previewVC.delegate = navigationController?.viewControllers.first as! SavedGifsViewController
         navigationController?.pushViewController(previewVC, animated: true)
     }
 }

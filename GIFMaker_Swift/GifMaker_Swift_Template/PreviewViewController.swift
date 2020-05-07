@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol PreviewViewControllerDelegate: class {
+    func previewVC(preview: PreviewViewController, didSaveGif gif: Gif)
+}
+
 class PreviewViewController: UIViewController {
     
     @IBOutlet weak var gifImageView: UIImageView!
+    
     var gif: Gif?
+    weak var delegate: PreviewViewControllerDelegate?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,5 +38,14 @@ class PreviewViewController: UIViewController {
         }
 
         navigationController?.present(activityVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func createAndSave(sender: AnyObject) {
+        // Copy GIF data from temporary URL
+        gif!.gifData = try? Data(contentsOf: gif!.url)
+        
+        delegate?.previewVC(preview: self, didSaveGif: gif!)
+
+        navigationController?.popToRootViewController(animated: true)
     }
 }
