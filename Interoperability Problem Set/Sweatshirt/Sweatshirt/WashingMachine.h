@@ -13,6 +13,6 @@
 
 @property (nonatomic) NSArray * _Nonnull clothes;
 
--(Sweatshirt* _Nullable)wash:(Sweatshirt* _Nullable)sweatshirt;
+-(Sweatshirt* _Nonnull)wash:(Sweatshirt* _Nonnull)sweatshirt;
 
 @end
